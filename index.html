@@ -1,0 +1,3891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Điều Hành Ca - Phân Ca Điều Dưỡng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Sora:wght@600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #14324a;
+      --muted: #5f7385;
+      --line: #d6e2ee;
+      --brand: #0f9d8a;
+      --brand-strong: #0b7668;
+      --warn: #e26d2f;
+      --idle: #1ea55b;
+      --busy: #f3a31a;
+      --leave: #8d7aad;
+      --glow: radial-gradient(circle at 12% 20%, #c4f4ea 0%, #eaf4ff 45%, #f4f7fb 100%);
+      --shadow: 0 12px 30px rgba(13, 64, 103, 0.1);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Be Vietnam Pro", sans-serif;
+      color: var(--ink);
+      background: var(--glow);
+      line-height: 1.55;
+      padding: 26px;
+    }
+
+    .orb {
+      position: fixed;
+      z-index: -1;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.34;
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 320px;
+      height: 320px;
+      background: #69e4cd;
+      top: -80px;
+      left: -70px;
+    }
+
+    .orb-2 {
+      width: 280px;
+      height: 280px;
+      background: #7ec3ff;
+      right: -70px;
+      top: 38%;
+    }
+
+    .wrap {
+      max-width: 1480px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    body.detail-view {
+      padding: 12px;
+    }
+
+    body.detail-view .wrap {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    body.detail-view #detailsGrid > #detailToolbar,
+    body.detail-view #detailsGrid > article.card[data-module] {
+      grid-column: 1 / -1 !important;
+    }
+
+    .nora-landing {
+      border-radius: 24px;
+      border: 1px solid #efc8d9;
+      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, #ffeef5 0%, #fff8fb 52%, #fff 100%);
+      overflow: hidden;
+      animation: rise 420ms ease;
+    }
+
+    .nora-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 20px;
+      background: #f8f7f8;
+      border-bottom: 1px solid #e9dbe3;
+    }
+
+    .nora-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 260px;
+    }
+
+    .nora-logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #df7097, #b8457c);
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .nora-logo-mark::after {
+      content: "";
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #f8c4d8;
+      right: -1px;
+      top: 2px;
+      border: 2px solid #fff;
+    }
+
+    .nora-logo {
+      font-family: "Sora", sans-serif;
+      color: #b8457c;
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .nora-menu {
+      display: flex;
+      justify-content: center;
+      flex: 1 1 auto;
+      gap: 14px;
+      color: #111827;
+      font-size: 0.96rem;
+      font-weight: 600;
+      font-family: "Sora", sans-serif;
+      letter-spacing: 0.01em;
+    }
+
+    .nora-link {
+      text-decoration: none;
+      color: #1b2432;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: color 140ms ease, background 140ms ease;
+    }
+
+    .nora-link.active {
+      color: #c34a7c;
+      font-weight: 700;
+    }
+
+    .nora-link:hover {
+      color: #c44a7d;
+      background: #fff;
+    }
+
+    .nora-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+      justify-content: flex-end;
+    }
+
+    .nora-search {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 2px solid #111827;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.04rem;
+      color: #111827;
+      text-decoration: none;
+      background: #fff;
+      line-height: 1;
+    }
+
+    .nora-contact {
+      text-decoration: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #c45480, #a64172);
+      color: #fff;
+      font-weight: 700;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+    }
+
+    .nora-elegant-title {
+      margin: 12px 24px 6px;
+      padding: 12px 16px;
+      border: 1px solid #efcfdd;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 245, 250, 0.9));
+      color: #b53e76;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.2rem, 2.2vw, 2rem);
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      text-align: center;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .nora-demo-banner {
+      margin: 14px 18px 6px;
+      border-radius: 22px;
+      border: 1px solid #efcfdd;
+      overflow: hidden;
+      box-shadow: 0 12px 24px rgba(209, 102, 145, 0.14);
+      background: #fff;
+    }
+
+    .nora-demo-banner img {
+      width: 100%;
+      display: block;
+      height: 520px;
+      object-fit: cover;
+      object-position: right center;
+    }
+
+    .nora-hero {
+      padding: 20px 24px 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .nora-copy h1 {
+      font-family: "Sora", sans-serif;
+      font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+      color: #d94e88;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .nora-copy p {
+      color: #6d5f68;
+      margin-bottom: 12px;
+      max-width: 640px;
+    }
+
+    .nora-ribbon {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: linear-gradient(135deg, #ff7aa8, #ff4d89);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .nora-hero-left {
+      border: 1px solid #efcddd;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff8fc 0%, #fff 100%);
+      overflow: hidden;
+    }
+
+    .nora-photo {
+      min-height: 285px;
+      background:
+        radial-gradient(circle at 24% 28%, rgba(255, 189, 212, 0.72) 0%, rgba(255, 189, 212, 0) 38%),
+        radial-gradient(circle at 76% 18%, rgba(183, 226, 255, 0.6) 0%, rgba(183, 226, 255, 0) 33%),
+        linear-gradient(120deg, #ffdbe8 0%, #ffeef5 45%, #ffffff 100%);
+      border-bottom: 1px solid #f0d8e2;
+      padding: 18px;
+      position: relative;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .nora-photo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255, 242, 248, 0.82) 0%, rgba(255, 242, 248, 0.52) 32%, rgba(255, 242, 248, 0.08) 60%, rgba(255, 242, 248, 0) 100%);
+      z-index: 1;
+    }
+
+    .nora-photo img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right center;
+      opacity: 0.98;
+    }
+
+    .nora-photo h2 {
+      position: relative;
+      z-index: 2;
+      color: #c13b76;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.2rem, 4.6vw, 4rem);
+      max-width: 760px;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.45);
+    }
+
+    .nora-photo p {
+      position: relative;
+      z-index: 2;
+      color: #bb4b7a;
+      font-size: clamp(1.03rem, 1.65vw, 1.25rem);
+      font-weight: 500;
+      max-width: 900px;
+      margin-top: 8px;
+      text-shadow: 0 2px 8px rgba(255, 255, 255, 0.38);
+    }
+
+    .nora-slogan {
+      margin: 10px 12px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff9fbe, #ff7fa9 55%, #f56d9b);
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+
+    .nora-catalog {
+      margin: 0 24px;
+      border-top: 1px solid #f3dbe6;
+      padding-top: 14px;
+      padding-bottom: 8px;
+    }
+
+    .nora-catalog h2 {
+      text-align: center;
+      font-family: "Sora", sans-serif;
+      color: #2f5f86;
+      font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+      margin-bottom: 12px;
+    }
+
+    .nora-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .nora-card {
+      border: 1px solid #edd3de;
+      border-radius: 16px;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 10px 20px rgba(210, 103, 147, 0.08);
+    }
+
+    .nora-card-photo {
+      height: 145px;
+      border-radius: 12px;
+      border: 1px solid #f1d7e2;
+      margin-bottom: 8px;
+      background: linear-gradient(120deg, #ffe2ed, #fff7fb);
+      overflow: hidden;
+    }
+
+    .nora-card-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+    }
+
+    .img-focus-top {
+      object-position: center 44% !important;
+    }
+
+    .img-focus-mid {
+      object-position: center 36% !important;
+    }
+
+    .img-focus-center {
+      object-position: center center !important;
+    }
+
+    .img-focus-mother {
+      object-position: center 22% !important;
+    }
+
+    .nora-card h3 {
+      color: #d45189;
+      font-size: 0.98rem;
+      font-family: "Sora", sans-serif;
+      margin-bottom: 4px;
+    }
+
+    .nora-card p {
+      color: #6a6471;
+      font-size: 0.83rem;
+      min-height: 42px;
+      margin-bottom: 8px;
+    }
+
+    .nora-card button {
+      width: 100%;
+      min-height: 38px;
+      border-radius: 999px;
+      color: #fff;
+      font-weight: 700;
+      border: none;
+    }
+
+    .nora-btn-pink { background: linear-gradient(135deg, #f877a7, #ea4e8e); }
+    .nora-btn-blue { background: linear-gradient(135deg, #6b97ff, #3a73df); }
+    .nora-btn-teal { background: linear-gradient(135deg, #58c9c0, #2aa79e); }
+    .nora-btn-purple { background: linear-gradient(135deg, #9c79d8, #7053b8); }
+
+    .landing-actions {
+      padding: 0 24px 24px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    body.overview-only .grid {
+      display: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      animation: rise 520ms ease;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-family: "Sora", sans-serif;
+      color: #0f3d5f;
+    }
+
+    .card p.tip {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+
+    .overview-hub {
+      border-style: dashed;
+      border-color: #cfdde9;
+      background: linear-gradient(180deg, #fbfdff 0%, #f4f9ff 100%);
+    }
+
+    .overview-hub-title {
+      margin-bottom: 8px;
+      font-family: "Sora", sans-serif;
+      font-size: clamp(1.24rem, 1.8vw, 1.6rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #0f3d5f 0%, #1e6a94 52%, #0f4f73 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .main-overview-title {
+      margin-bottom: 10px;
+      font-family: "Sora", sans-serif;
+      font-size: clamp(1.12rem, 1.6vw, 1.4rem);
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #0d3b5c;
+      border-left: 4px solid #1f7aa8;
+      padding-left: 10px;
+      line-height: 1.25;
+    }
+
+    .overview-hub-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .overview-hub-item {
+      border: 1px solid #d5e2ef;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+      color: #1f4665;
+      font-weight: 700;
+      min-height: 58px;
+    }
+
+    .detail-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .detail-toolbar p {
+      color: #4f6f88;
+      font-size: 0.9rem;
+    }
+
+    .span-5 { grid-column: span 5; }
+    .span-7 { grid-column: span 7; }
+    .span-12 { grid-column: span 12; }
+
+    form {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      font-size: 0.9rem;
+      color: #245173;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #c9d9e8;
+      border-radius: 11px;
+      background: #fbfdff;
+      color: #173954;
+      padding: 10px 11px;
+      min-height: 42px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #18a592;
+      box-shadow: 0 0 0 3px rgba(24, 165, 146, 0.18);
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      min-height: 42px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 140ms ease, filter 140ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-strong));
+      color: #f8ffff;
+    }
+
+    .btn-muted {
+      background: #eaf2fb;
+      color: #245173;
+      border: 1px solid #cfe1f0;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .idle { background: var(--idle); }
+    .busy { background: var(--busy); }
+    .leave { background: var(--leave); }
+    .pending { background: #3274cc; }
+
+    .status-text {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #38556f;
+    }
+
+    .small-note {
+      margin-top: 4px;
+      color: #6c879d;
+      font-size: 0.8rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #dce7f2;
+      border-radius: 12px;
+      background: #fcfeff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 770px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      font-size: 0.92rem;
+      padding: 10px;
+      border-bottom: 1px solid #ecf2f8;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f1f8ff;
+      color: #245173;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr:hover td {
+      background: #f7fcff;
+    }
+
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      border: 1px solid #bfd8ea;
+      background: #eff7fd;
+      padding: 3px 9px;
+      font-size: 0.78rem;
+      margin: 1px;
+      color: #1f4f70;
+    }
+
+    .request-list,
+    .suggestion-list,
+    .assignment-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .request-item,
+    .suggestion-item,
+    .assignment-item {
+      border: 1px solid #d4e2ef;
+      background: #f9fcff;
+      border-radius: 12px;
+      padding: 12px;
+      animation: rise 300ms ease;
+    }
+
+    .request-item h3,
+    .suggestion-item h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: #194462;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 0.86rem;
+      color: #456783;
+    }
+
+    .meta span {
+      background: #eaf4ff;
+      border: 1px solid #cfe0ee;
+      border-radius: 999px;
+      padding: 3px 9px;
+    }
+
+    .suggestion-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .score {
+      color: #0d7768;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .empty {
+      color: #60788e;
+      font-style: italic;
+    }
+
+    .footer-note {
+      color: #658097;
+      font-size: 0.88rem;
+    }
+
+    .banner {
+      margin-top: 8px;
+      border: 1px solid #b5d2ea;
+      background: #e9f6ff;
+      color: #245173;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+    }
+
+    .banner.warn {
+      border-color: #f0c998;
+      background: #fff7ef;
+      color: #8a4f12;
+    }
+
+    .warning-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .warning-item {
+      border-radius: 10px;
+      padding: 9px 11px;
+      border: 1px solid #f1d1ae;
+      background: #fff8f1;
+      color: #88501c;
+      font-size: 0.9rem;
+    }
+
+    .warning-item.high {
+      border-color: #efb1b1;
+      background: #fff1f1;
+      color: #9a2b2b;
+    }
+
+    .warning-item.medium {
+      border-color: #f4d9a5;
+      background: #fff9ef;
+      color: #8a5a11;
+    }
+
+    .warning-item.low {
+      border-color: #c8dfef;
+      background: #f3f9ff;
+      color: #2f607f;
+    }
+
+    .ops-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .ops-kpi {
+      border: 1px solid #dce7f2;
+      background: #f8fcff;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .ops-kpi .label {
+      font-size: 0.84rem;
+      color: #6a8297;
+    }
+
+    .ops-kpi .value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #1f4f70;
+      margin-top: 2px;
+    }
+
+    .ops-list {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .ops-list p {
+      font-size: 0.9rem;
+      color: #486780;
+    }
+
+    .ops-list .time {
+      color: #1f4f70;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .nurse-time {
+      font-size: 0.88rem;
+      color: #3f607a;
+      line-height: 1.5;
+    }
+
+    .skill-groups {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .skill-group {
+      border: 1px solid #dce7f2;
+      border-radius: 10px;
+      background: #f8fcff;
+      padding: 10px;
+    }
+
+    .skill-group h4 {
+      font-size: 0.9rem;
+      color: #1f4f70;
+      margin-bottom: 8px;
+    }
+
+    .skill-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 10px;
+    }
+
+    .skill-options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.86rem;
+      color: #355b78;
+      font-weight: 500;
+    }
+
+    .skill-options input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      min-height: auto;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .span-5,
+      .span-7,
+      .span-12 {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+
+      .nora-landing,
+      .card {
+        padding: 14px;
+      }
+
+      .nora-hero {
+        grid-template-columns: 1fr;
+        padding: 8px 0;
+      }
+
+      .nora-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .nora-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nora-brand,
+      .nora-nav-actions {
+        min-width: auto;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nora-menu {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .nora-catalog,
+      .landing-actions {
+        margin: 0;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .nora-demo-banner {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .nora-demo-banner img {
+        height: 240px;
+      }
+
+      .nora-elegant-title {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .overview-hub-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ops-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-options {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="wrap">
+    <section id="noraLanding" class="nora-landing" aria-label="Giới thiệu Nora">
+      <div class="nora-nav" aria-label="Danh mục chính">
+        <div class="nora-brand">
+          <span class="nora-logo-mark" aria-hidden="true"></span>
+          <p class="nora-logo">Nora Care</p>
+        </div>
+
+        <nav class="nora-menu" aria-label="Menu">
+          <a class="nora-link active" href="#">Trang chủ</a>
+          <a class="nora-link" href="#">Giới thiệu</a>
+          <a class="nora-link" href="#">Mẹ bầu</a>
+          <a class="nora-link" href="#">Sau sinh</a>
+          <a class="nora-link" href="#">Em bé</a>
+          <a class="nora-link" href="#">Bảo mẫu</a>
+          <a class="nora-link" href="#">Cẩm nang</a>
+        </nav>
+
+        <div class="nora-nav-actions">
+          <a class="nora-search" href="#" aria-label="Tìm kiếm">&#128269;</a>
+          <a class="nora-contact" href="#">Liên hệ</a>
+        </div>
+      </div>
+
+      <section class="nora-demo-banner" aria-label="Banner Nora Care">
+        <img src="assets/nora/hero-team-care.png" alt="Nora Care - Chăm sóc bằng Tâm và Tầm" onerror="this.style.display='none'" />
+      </section>
+
+      <section class="nora-catalog" aria-label="Dịch vụ của Nora">
+        <h2>Các Dịch Vụ Của Chúng Tôi</h2>
+        <div class="nora-cards">
+          <article class="nora-card">
+            <div class="nora-card-photo">
+              <img class="img-focus-top" src="assets/nora/01-tam-be-massage.png" alt="Tắm bé và massage bé" onerror="this.style.display='none'" />
+            </div>
+            <h3>Tắm Bé & Massage Bé</h3>
+            <p>Theo lịch gia đình, điều dưỡng hỗ trợ đúng quy trình an toàn.</p>
+            <button class="nora-btn-pink" type="button">Xem thêm</button>
+          </article>
+          <article class="nora-card">
+            <div class="nora-card-photo">
+              <img class="img-focus-mid" src="assets/nora/03-me-sau-sinh.png" alt="Chăm sóc mẹ tại nhà" onerror="this.style.display='none'" />
+            </div>
+            <h3>Chăm Sóc Mẹ Tại Nhà</h3>
+            <p>Phục hồi sau sinh và chăm sóc mẹ bầu theo từng giai đoạn.</p>
+            <button class="nora-btn-blue" type="button">Xem thêm</button>
+          </article>
+          <article class="nora-card">
+            <div class="nora-card-photo">
+              <img class="img-focus-center" src="assets/nora/04-kham-me-bau.png" alt="Dinh dưỡng sau sinh" onerror="this.style.display='none'" />
+            </div>
+            <h3>Dinh Dưỡng Sau Sinh</h3>
+            <p>Thực đơn hỗ trợ hồi phục thể lực và ổn định sức khỏe sau sinh.</p>
+            <button class="nora-btn-teal" type="button">Xem thêm</button>
+          </article>
+          <article class="nora-card">
+            <div class="nora-card-photo">
+              <img class="img-focus-mother" src="assets/nora/02-tu-van-care-plan.png" alt="Tư vấn và hỗ trợ 24/7" onerror="this.style.display='none'" />
+            </div>
+            <h3>Tư Vấn & Hỗ Trợ 24/7</h3>
+            <p>Tư vấn sức khỏe mẹ bé, theo dõi và nhắc lịch chăm sóc tại nhà.</p>
+            <button class="nora-btn-purple" type="button">Xem thêm</button>
+          </article>
+        </div>
+      </section>
+
+      <div class="landing-actions">
+        <button id="enterMainOverviewButton" class="btn-primary" type="button">Đi tới Báo cáo Bộ phận Phân ca</button>
+      </div>
+    </section>
+
+    <section id="detailsGrid" class="grid">
+      <article id="detailToolbar" class="card span-12" hidden>
+        <div class="detail-toolbar">
+          <p>Đang xem chi tiết một mục. Bấm để quay lại danh sách đầu mục.</p>
+          <button id="backToSectionListButton" class="btn-muted" type="button">Quay lại đầu mục</button>
+        </div>
+      </article>
+
+      <article id="overviewHub" class="card span-12 overview-hub">
+        <h2 class="overview-hub-title">Báo cáo Bộ phận Phân ca</h2>
+        <p class="tip">Chọn một mục để mở phần chi tiết tương ứng.</p>
+        <div class="overview-hub-grid">
+          <button class="overview-hub-item" type="button" data-open-module="overview">Bảng điều hành và Báo cáo ca điều dưỡng</button>
+          <button class="overview-hub-item" type="button" data-open-module="nurse">Quản lý điều dưỡng</button>
+          <button class="overview-hub-item" type="button" data-open-module="request">Tiếp nhận yêu cầu</button>
+          <button class="overview-hub-item" type="button" data-open-module="customer">Hồ sơ khách hàng</button>
+          <button class="overview-hub-item" type="button" data-open-module="package">Quản lý gói dịch vụ</button>
+          <button class="overview-hub-item" type="button" data-open-module="schedule">Quản lý lịch ca</button>
+          <button class="overview-hub-item" type="button" data-open-module="warning">Cảnh báo</button>
+        </div>
+      </article>
+
+      <article id="mainOverviewSection" class="card span-12" data-module="overview">
+        <h2 class="main-overview-title">Bảng báo cáo tổng</h2>
+        <p class="tip">Theo dõi nhanh tình hình ca hôm nay và trạng thái điều dưỡng.</p>
+        <div class="ops-grid">
+          <div class="ops-kpi">
+            <p class="label">Hôm nay: Bao nhiêu ca</p>
+            <p id="opsTodayTotal" class="value">0</p>
+          </div>
+          <div class="ops-kpi">
+            <p class="label">Ca chưa có điều dưỡng ⚠️</p>
+            <p id="opsTodayUnassigned" class="value">0</p>
+          </div>
+          <div class="ops-kpi">
+            <p class="label">Ca có vấn đề ⚠️</p>
+            <p id="opsTodayIssues" class="value">0</p>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 8px;">
+          <div class="ops-kpi">
+            <p class="label">Theo điều dưỡng: Ai đang bận</p>
+            <div id="opsBusyList" class="ops-list"></div>
+          </div>
+          <div class="ops-kpi">
+            <p class="label">Theo điều dưỡng: Ai rảnh</p>
+            <div id="opsFreeList" class="ops-list"></div>
+          </div>
+        </div>
+      </article>
+
+      <article id="nurse-report" class="card span-12" data-module="overview">
+        <h2>Báo cáo ca điều dưỡng</h2>
+        <p class="tip">Tổng số ca đi trong ngày theo từng điều dưỡng và tổng ca cộng dồn trong tháng (quy đổi: 1 ca = 90 phút).</p>
+
+        <div class="row">
+          <label>
+            Chọn ngày báo cáo
+            <input id="reportDate" type="date" />
+          </label>
+          <label>
+            Chọn tháng báo cáo
+            <input id="reportMonth" type="month" />
+          </label>
+        </div>
+
+        <div class="banner" id="reportMonthTotal">Tổng số ca trong tháng: 0</div>
+
+        <div class="table-wrap" style="margin-top: 10px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Điều dưỡng</th>
+                <th>Ca trong ngày</th>
+                <th>Ca trong tháng (cộng dồn)</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article id="nurse-management" class="card span-5" data-module="nurse">
+        <h2>1) Quản lý danh sách điều dưỡng</h2>
+        <p class="tip">Theo dõi trạng thái hoạt động và khu vực làm việc của điều dưỡng.</p>
+
+        <form id="nurseForm">
+          <div class="row">
+            <label>
+              Họ tên điều dưỡng
+              <input id="nurseName" type="text" placeholder="Ví dụ: Nguyễn Lan Anh" required />
+            </label>
+            <label>
+              Trạng thái
+              <select id="nurseStatus" required>
+                <option value="RANH">Đang rảnh</option>
+                <option value="CO_CA">Đang có ca</option>
+                <option value="NGHI_PHEP">Đang nghỉ phép</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Khu vực làm việc
+              <select id="nurseCity" required>
+                <option value="HN">Hà Nội</option>
+                <option value="HCM">TP.HCM</option>
+              </select>
+            </label>
+            <label>
+              Quận/Huyện (để tính khoảng cách)
+              <select id="nurseDistrict" required></select>
+            </label>
+          </div>
+          <label>
+            Telegram Chat ID của điều dưỡng
+            <input id="nurseTelegramChatId" type="text" placeholder="Ví dụ: 123456789" />
+          </label>
+          <button class="btn-primary" type="submit">Thêm điều dưỡng</button>
+        </form>
+      </article>
+
+      <article id="nurse-list" class="card span-7" data-module="nurse">
+        <h2>Danh sách điều dưỡng hiện có</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Trạng thái</th>
+                <th>Khung giờ hôm nay</th>
+                <th>Khu vực</th>
+                <th>Telegram</th>
+                <th>Cập nhật trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="nurseTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article id="customer-requests" class="card span-5" data-module="request">
+        <h2>2) Tiếp nhận yêu cầu khách hàng</h2>
+        <p class="tip">Lưu gói dịch vụ, địa chỉ và thời gian khách hàng yêu cầu.</p>
+
+        <form id="requestForm">
+          <div class="row">
+            <label>
+              Tên khách hàng
+              <input id="customerName" type="text" placeholder="Ví dụ: Trần Minh Hà" required />
+            </label>
+            <label>
+              Gói dịch vụ
+              <select id="servicePackage" required>
+                <option value="Mẹ bầu">Mẹ bầu</option>
+                <option value="Sau sinh">Sau sinh</option>
+                <option value="Em bé">Em bé</option>
+                <option value="Bảo mẫu">Bảo mẫu</option>
+                <option value="Gói cũ cao cấp 120p">Gói cũ cao cấp 120p</option>
+                <option value="TTTS">TTTS</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Số buổi đăng ký
+              <input id="serviceSessions" type="number" min="1" value="1" required />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Thành phố
+              <select id="customerCity" required>
+                <option value="HN">Hà Nội</option>
+                <option value="HCM">TP.HCM</option>
+              </select>
+            </label>
+            <label>
+              Quận/Huyện
+              <select id="customerDistrict" required></select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Địa chỉ chi tiết
+              <input id="customerAddress" type="text" placeholder="Số nhà, đường..." required />
+            </label>
+            <label>
+              Thời gian yêu cầu
+              <input id="requestTime" type="datetime-local" required />
+            </label>
+          </div>
+          <button class="btn-primary" type="submit">Lưu yêu cầu</button>
+        </form>
+
+        <div id="requestList" class="request-list"></div>
+      </article>
+
+      <article id="request-suggest" class="card span-7" data-module="request">
+        <h2>3) Thuật toán gợi ý phân ca</h2>
+        <p class="tip">Hệ thống lọc điều dưỡng gần khách hàng nhất và đang trống lịch để bấm "Giao ca".</p>
+
+        <form id="suggestForm">
+          <div class="row">
+            <label>
+              Chọn yêu cầu khách hàng
+              <select id="requestSelect" required></select>
+            </label>
+            <label>
+              Số lượng gợi ý
+              <select id="topN">
+                <option value="3">Top 3</option>
+                <option value="5" selected>Top 5</option>
+                <option value="8">Top 8</option>
+              </select>
+            </label>
+          </div>
+          <button class="btn-primary" type="submit">Gợi ý phân ca</button>
+        </form>
+
+        <div id="suggestionList" class="suggestion-list"></div>
+        <p class="footer-note">Sau khi điều dưỡng bấm xác nhận trên Telegram, trạng thái sẽ tự đổi sang "Đang có ca".</p>
+      </article>
+
+      <article id="telegram-integration" class="card span-12" data-module="request">
+        <h2>4) Tích hợp thông báo qua Telegram Bot</h2>
+        <p class="tip">Khi bấm "Giao ca", hệ thống gửi tin qua Telegram và chờ điều dưỡng bấm [Xác nhận] để đồng bộ ngược về website.</p>
+
+        <form id="telegramForm">
+          <div class="row">
+            <label>
+              Chế độ gửi
+              <select id="telegramMode">
+                <option value="gateway" selected>Gateway API (khuyến nghị)</option>
+                <option value="direct">Direct Bot API (test nhanh)</option>
+              </select>
+            </label>
+            <label>
+              Bot Token (chỉ dùng cho Direct)
+              <input id="telegramBotToken" type="password" placeholder="123456:ABC..." />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Dispatch URL (gửi tin)
+              <input id="telegramDispatchUrl" type="url" placeholder="https://api.your-domain.com/telegram/dispatch" />
+            </label>
+            <label>
+              Sync URL (lấy xác nhận)
+              <input id="telegramSyncUrl" type="url" placeholder="https://api.your-domain.com/telegram/confirmations" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Tự đồng bộ mỗi (giây)
+              <input id="telegramPollSeconds" type="number" min="5" value="15" />
+            </label>
+            <label>
+              Hành động
+              <div class="row">
+                <button id="saveTelegramConfig" class="btn-primary" type="submit">Lưu cấu hình Telegram</button>
+                <button id="syncTelegramButton" class="btn-muted" type="button">Đồng bộ xác nhận ngay</button>
+              </div>
+            </label>
+          </div>
+        </form>
+
+        <div id="telegramStatusBanner" class="banner">
+          Chưa đồng bộ Telegram.
+        </div>
+
+        <div id="assignmentList" class="assignment-list"></div>
+      </article>
+
+      <article id="customer-profiles" class="card span-5" data-module="customer">
+        <h2>5) Hồ sơ khách hàng và liệu trình</h2>
+        <p class="tip">Theo dõi toàn bộ thông tin khách hàng, kế hoạch điều trị và ghi chú chuyên môn.</p>
+
+        <form id="customerProfileForm">
+          <input id="profileId" type="hidden" />
+          <div class="row">
+            <label>
+              Họ tên khách hàng
+              <input id="profileName" type="text" placeholder="Ví dụ: Nguyễn Văn A" required />
+            </label>
+            <label>
+              Số điện thoại
+              <input id="profilePhone" type="text" placeholder="0988xxxxxx" required />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Mã hợp đồng
+              <input id="profileContractCode" type="text" placeholder="Ví dụ: HD-2026-001" required />
+            </label>
+            <label>
+              Khu vực
+              <select id="profileCity" required>
+                <option value="HN">Hà Nội</option>
+                <option value="HCM">TP.HCM</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Quận/Huyện
+              <select id="profileDistrict" required></select>
+            </label>
+            <label>
+              Ghi chú đặc biệt
+              <input id="profileSpecialNote" type="text" placeholder="Khó tính, yêu cầu cao, nhà xa..." />
+            </label>
+          </div>
+          <label>
+            Địa chỉ chi tiết
+            <input id="profileAddress" type="text" placeholder="Số nhà, tên đường..." required />
+          </label>
+          <label>
+            Liệu trình điều dưỡng
+            <textarea id="profilePlan" placeholder="Ví dụ: Truyền dịch 5 buổi, theo dõi huyết áp 2 lần/ngày" required></textarea>
+          </label>
+          <div class="row">
+            <label>
+              Ghi chú y khoa
+              <textarea id="profileNote" placeholder="Dị ứng thuốc, lưu ý đặc biệt..."></textarea>
+            </label>
+          </div>
+          <div class="row">
+            <button class="btn-primary" type="submit">Lưu hồ sơ khách hàng</button>
+            <button id="profileResetButton" class="btn-muted" type="button">Tạo mới hồ sơ</button>
+          </div>
+        </form>
+      </article>
+
+      <article id="customer-profiles-list" class="card span-7" data-module="customer">
+        <h2>Danh sách hồ sơ khách hàng</h2>
+        <div class="row">
+          <label>
+            Tìm kiếm khách (SĐT, mã hợp đồng, tên)
+            <input id="customerSearchInput" type="text" placeholder="Nhập sđt / mã hợp đồng / tên" />
+          </label>
+          <label>
+            Thao tác
+            <button id="customerSearchClear" class="btn-muted" type="button">Xóa tìm kiếm</button>
+          </label>
+        </div>
+        <div id="customerProfileList" class="request-list"></div>
+        <h2 style="margin-top: 16px;">Lịch sử sử dụng dịch vụ</h2>
+        <div id="customerServiceHistory" class="request-list">
+          <p class="empty">Chọn "Xem lịch sử" ở một khách để xem chi tiết.</p>
+        </div>
+      </article>
+
+      <article id="service-packages" class="card span-12" data-module="package">
+        <h2>2.2) Quản lý gói dịch vụ</h2>
+        <p class="tip">Quản lý danh mục gói, gán gói cho khách và theo dõi số buổi đã dùng/còn lại.</p>
+
+        <div class="grid" style="grid-template-columns: repeat(12, 1fr);">
+          <div class="span-5">
+            <form id="packageForm">
+              <div class="row">
+                <label>
+                  Tên gói
+                  <select id="packageName" required>
+                    <option value="ME BẦU CB">ME BẦU CB</option>
+                    <option value="ME BẦU NC">ME BẦU NC</option>
+                    <option value="ME BẦU CC">ME BẦU CC</option>
+                    <option value="SAU SINH CB">SAU SINH CB</option>
+                    <option value="SAU SINH NC">SAU SINH NC</option>
+                    <option value="SAU SINH CC">SAU SINH CC</option>
+                    <option value="TẮM BÉ CB">TẮM BÉ CB</option>
+                    <option value="TẮM BÉ NC">TẮM BÉ NC</option>
+                    <option value="TẮM BÉ CC">TẮM BÉ CC</option>
+                    <option value="BẢO MẪU">BẢO MẪU</option>
+                  </select>
+                </label>
+                <label>
+                  Số buổi
+                  <input id="packageSessions" type="number" min="1" value="10" required />
+                </label>
+              </div>
+              <div class="row">
+                <label>
+                  Thời lượng
+                  <select id="packageDuration" required>
+                    <option value="30">30 phút</option>
+                    <option value="45">45 phút</option>
+                    <option value="60">60 phút</option>
+                    <option value="90">90 phút</option>
+                    <option value="120">120 phút</option>
+                    <option value="150">150 phút</option>
+                  </select>
+                </label>
+                <label>
+                  Loại gói
+                  <select id="packageTier" required>
+                    <option value="Cơ bản">Cơ bản</option>
+                    <option value="Nâng cao">Nâng cao</option>
+                    <option value="Cao cấp">Cao cấp</option>
+                  </select>
+                </label>
+              </div>
+              <div class="row">
+                <label>
+                  Có bác sĩ
+                  <select id="packageDoctor" required>
+                    <option value="NO">Không</option>
+                    <option value="YES">Có</option>
+                  </select>
+                </label>
+              </div>
+              <button class="btn-primary" type="submit">Lưu gói dịch vụ</button>
+            </form>
+          </div>
+
+          <div class="span-7">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tên gói</th>
+                    <th>Số buổi</th>
+                    <th>Thời lượng</th>
+                    <th>Loại gói</th>
+                    <th>Bác sĩ</th>
+                  </tr>
+                </thead>
+                <tbody id="packageTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <form id="assignPackageForm">
+          <div class="row">
+            <label>
+              Chọn khách hàng
+              <select id="assignPackageCustomer" required></select>
+            </label>
+            <label>
+              Chọn gói
+              <select id="assignPackageSelect" required></select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Ngày gán
+              <input id="assignPackageDate" type="date" required />
+            </label>
+          </div>
+          <button class="btn-primary" type="submit">Gán gói cho khách</button>
+        </form>
+
+        <h2 style="margin-top: 8px;">Theo dõi gói đã gán</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Khách hàng</th>
+                <th>Gói</th>
+                <th>Tổng buổi</th>
+                <th>Đã dùng</th>
+                <th>Còn lại</th>
+                <th>Ngày gán</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="assignedPackageTableBody"></tbody>
+          </table>
+        </div>
+
+        <h2 style="margin-top: 10px;">2.3) Chuyển đổi gói</h2>
+        <p class="tip">Cho phép đổi gói và quy đổi buổi; các trường hợp cần xử lý thủ công sẽ gửi về điều hành ca để duyệt.</p>
+
+        <form id="packageConversionForm">
+          <div class="row">
+            <label>
+              Khách hàng
+              <select id="conversionCustomerSelect" required></select>
+            </label>
+            <label>
+              Gói nguồn đang dùng
+              <select id="conversionSourceAssignment" required></select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Đổi sang gói
+              <select id="conversionTargetPackage" required></select>
+            </label>
+            <label>
+              Số buổi gói nguồn muốn đổi
+              <input id="conversionSourceSessions" type="number" min="1" value="1" required />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Người duyệt (nếu tự động/đã duyệt)
+              <select id="conversionApprover">
+                <option value="">Chưa chọn</option>
+                <option value="CEO">CEO</option>
+                <option value="Quản lý">Quản lý</option>
+                <option value="Lead">Lead</option>
+              </select>
+            </label>
+            <label>
+              Lý do chuyển đổi
+              <input id="conversionReason" type="text" placeholder="Khách đổi nhu cầu dịch vụ" required />
+            </label>
+          </div>
+          <button class="btn-primary" type="submit">Đổi gói / Gửi yêu cầu điều hành</button>
+        </form>
+
+        <div class="row">
+          <label>
+            Người duyệt thủ công
+            <select id="conversionApprovalBy">
+              <option value="">Chọn người duyệt</option>
+              <option value="CEO">CEO</option>
+              <option value="Quản lý">Quản lý</option>
+              <option value="Lead">Lead</option>
+            </select>
+          </label>
+          <label>
+            Số buổi gói đích sau duyệt
+            <input id="conversionApprovedTargetSessions" type="number" min="1" value="1" />
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Khách hàng</th>
+                <th>Từ gói</th>
+                <th>Sang gói</th>
+                <th>Quy đổi</th>
+                <th>Trạng thái</th>
+                <th>Ai duyệt</th>
+                <th>Lý do</th>
+                <th>Thời gian</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="conversionHistoryTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article id="daily-schedule" class="card span-7" data-module="schedule">
+        <h2>6) Quản lý lịch ca trong ngày</h2>
+        <p class="tip">Biết rõ khách nào đặt lịch giờ nào, điều dưỡng nào đi ca nào.</p>
+
+        <form id="scheduleForm">
+          <div class="row">
+            <label>
+              Ngày quản lý lịch
+              <input id="scheduleDate" type="date" required />
+            </label>
+            <label>
+              Yêu cầu khách hàng liên quan
+              <select id="scheduleRequestSelect">
+                <option value="">Không liên kết yêu cầu</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Khách hàng
+              <select id="scheduleCustomerSelect" required></select>
+            </label>
+            <label>
+              Điều dưỡng
+              <select id="scheduleNurseSelect" required></select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Gói đã gán cho khách
+              <select id="schedulePackageAssignmentSelect">
+                <option value="">Không gắn gói</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Giờ bắt đầu
+              <input id="scheduleStartTime" type="time" required />
+            </label>
+            <label>
+              Giờ kết thúc
+              <input id="scheduleEndTime" type="time" required />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Trạng thái thực hiện dịch vụ
+              <select id="scheduleServiceStatus" required>
+                <option value="PENDING" selected>Chưa làm</option>
+                <option value="DONE">Đã làm</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            Ghi chú ca
+            <input id="scheduleNote" type="text" placeholder="Theo dõi đường huyết sau ăn" />
+          </label>
+          <button class="btn-primary" type="submit">Lưu lịch ca</button>
+        </form>
+
+        <div class="row">
+          <label>
+            Xem lịch ngày
+            <input id="scheduleDateFilter" type="date" />
+          </label>
+          <label>
+            Thao tác
+            <button id="refreshWarningsButton" class="btn-muted" type="button">Quét cảnh báo</button>
+          </label>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Giờ</th>
+                <th>Khách hàng</th>
+                <th>Điều dưỡng</th>
+                <th>Liên kết yêu cầu</th>
+                <th>Thực hiện</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article id="warning-center" class="card span-5" data-module="warning">
+        <h2>Mục cảnh báo sót/thiếu/sai</h2>
+        <p class="tip">Tự động phát hiện các lỗi phân ca để điều hành viên xử lý sớm.</p>
+        <div id="warningList" class="warning-list"></div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = {
+      nurses: "shift_nurses_v1",
+      requests: "shift_requests_v1",
+      assignments: "shift_assignments_v1",
+      telegramConfig: "shift_telegram_config_v1",
+      telegramOffset: "shift_telegram_offset_v1",
+      customers: "shift_customers_v1",
+      schedules: "shift_schedules_v1",
+      packages: "shift_packages_v1",
+      customerPackages: "shift_customer_packages_v1",
+      packageConversions: "shift_package_conversions_v1"
+    };
+
+    const DISTRICT_COORDS = {
+      HN: {
+        "Ba Đình": { lat: 21.0358, lng: 105.8142 },
+        "Cầu Giấy": { lat: 21.0362, lng: 105.7902 },
+        "Đống Đa": { lat: 21.0176, lng: 105.8298 },
+        "Hoàn Kiếm": { lat: 21.0287, lng: 105.8524 },
+        "Hà Đông": { lat: 20.9586, lng: 105.7595 },
+        "Đông Anh": { lat: 21.1369, lng: 105.8462 },
+        "Hoàng Mai": { lat: 20.9797, lng: 105.8636 },
+        "Thanh Oai": { lat: 20.8585, lng: 105.7770 },
+        "Thanh Trì": { lat: 20.9488, lng: 105.8460 },
+        "Thanh Xuân": { lat: 21.0022, lng: 105.8067 },
+        "Bắc Từ Liêm": { lat: 21.0719, lng: 105.7650 },
+        "Bạch Đằng": { lat: 21.0154, lng: 105.8684 },
+        "Phú Đô ( Nam Từ Liêm )": { lat: 21.0014, lng: 105.7665 },
+        "CẦU GIẤY - BẮC TỪ LIÊM": { lat: 21.0540, lng: 105.7780 }
+      },
+      HCM: {
+        "Quận 1": { lat: 10.7756, lng: 106.7009 },
+        "Quận 3": { lat: 10.7869, lng: 106.6841 },
+        "Quận 7": { lat: 10.7324, lng: 106.7219 },
+        "Thủ Đức": { lat: 10.8492, lng: 106.7535 },
+        "Bình Thạnh": { lat: 10.8108, lng: 106.7091 }
+      }
+    };
+
+    const DISTRICT_ALIASES = {
+      HN: {
+        "ba dinh": "Ba Đình",
+        "ba đình": "Ba Đình",
+        "cau giay": "Cầu Giấy",
+        "cầu giấy": "Cầu Giấy",
+        "dong da": "Đống Đa",
+        "đống đa": "Đống Đa",
+        "hoan kiem": "Hoàn Kiếm",
+        "ha dong": "Hà Đông",
+        "hà đông": "Hà Đông",
+        "dong anh": "Đông Anh",
+        "đông anh": "Đông Anh",
+        "hoang mai": "Hoàng Mai",
+        "thanh oai": "Thanh Oai",
+        "thanh tri": "Thanh Trì",
+        "thanh trì": "Thanh Trì",
+        "thanh xuan": "Thanh Xuân",
+        "thanh xuân": "Thanh Xuân",
+        "bac tu liem": "Bắc Từ Liêm",
+        "bắc từ liêm": "Bắc Từ Liêm",
+        "bach dang": "Bạch Đằng",
+        "bạch đằng": "Bạch Đằng",
+        "phu do ( nam tu liem )": "Phú Đô ( Nam Từ Liêm )",
+        "phú đô ( nam từ liêm )": "Phú Đô ( Nam Từ Liêm )",
+        "cau giay - bac tu liem": "CẦU GIẤY - BẮC TỪ LIÊM",
+        "cầu giấy - bắc từ liêm": "CẦU GIẤY - BẮC TỪ LIÊM"
+      },
+      HCM: {
+        "quan 1": "Quận 1",
+        "quan 3": "Quận 3",
+        "quan 7": "Quận 7",
+        "thu duc": "Thủ Đức",
+        "thủ đức": "Thủ Đức",
+        "binh thanh": "Bình Thạnh",
+        "bình thạnh": "Bình Thạnh"
+      }
+    };
+
+    const STATUS_META = {
+      RANH: { label: "Đang rảnh", cls: "idle" },
+      CO_CA: { label: "Đang có ca", cls: "busy" },
+      NGHI_PHEP: { label: "Đang nghỉ phép", cls: "leave" },
+      CHO_XN: { label: "Chờ xác nhận Telegram", cls: "pending" }
+    };
+
+    const ASSIGNMENT_STATUS_META = {
+      QUEUED: "Đang gửi Telegram",
+      WAIT_CONFIRM: "Đã gửi, chờ xác nhận",
+      CONFIRMED: "Đã xác nhận",
+      SEND_FAILED: "Gửi Telegram lỗi"
+    };
+
+    let nurses = loadFromStorage(STORAGE_KEYS.nurses, [
+      {
+        id: crypto.randomUUID(),
+        name: "Lê Thu Trang",
+        status: "RANH",
+        city: "HN",
+        district: "Cầu Giấy",
+        skills: ["ICU", "hồi sức", "chăm sóc hậu phẫu"],
+        telegramChatId: ""
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Phạm Ngọc Anh",
+        status: "CO_CA",
+        city: "HCM",
+        district: "Quận 1",
+        skills: ["truyền dịch", "theo dõi huyết áp"],
+        telegramChatId: ""
+      },
+      {
+        id: crypto.randomUUID(),
+        name: "Nguyễn Thanh Lam",
+        status: "RANH",
+        city: "HCM",
+        district: "Thủ Đức",
+        skills: ["chăm sóc người cao tuổi", "vật lý trị liệu nhẹ"],
+        telegramChatId: ""
+      }
+    ]);
+
+    let requests = loadFromStorage(STORAGE_KEYS.requests, []);
+    let assignments = loadFromStorage(STORAGE_KEYS.assignments, []);
+    let customers = loadFromStorage(STORAGE_KEYS.customers, []);
+    let schedules = loadFromStorage(STORAGE_KEYS.schedules, []);
+    let packages = loadFromStorage(STORAGE_KEYS.packages, [
+      { id: crypto.randomUUID(), name: "Mẹ bầu", totalSessions: 10, duration: 90, tier: "Nâng cao", hasDoctor: true },
+      { id: crypto.randomUUID(), name: "Sau sinh", totalSessions: 12, duration: 90, tier: "Cao cấp", hasDoctor: true },
+      { id: crypto.randomUUID(), name: "Em bé", totalSessions: 8, duration: 60, tier: "Cơ bản", hasDoctor: false },
+      { id: crypto.randomUUID(), name: "Bảo mẫu", totalSessions: 12, duration: 120, tier: "Cao cấp", hasDoctor: false },
+      { id: crypto.randomUUID(), name: "Gói cũ cao cấp 120p", totalSessions: 10, duration: 120, tier: "Cao cấp", hasDoctor: false },
+      { id: crypto.randomUUID(), name: "TTTS", totalSessions: 6, duration: 60, tier: "Nâng cao", hasDoctor: false }
+    ]);
+    let customerPackages = loadFromStorage(STORAGE_KEYS.customerPackages, []);
+    let packageConversions = loadFromStorage(STORAGE_KEYS.packageConversions, []);
+    let telegramConfig = loadObjectFromStorage(STORAGE_KEYS.telegramConfig, {
+      mode: "gateway",
+      botToken: "",
+      dispatchUrl: "",
+      syncUrl: "",
+      pollSeconds: 15
+    });
+    let telegramOffset = loadPrimitiveFromStorage(STORAGE_KEYS.telegramOffset, 0);
+    let telegramPollTimer = null;
+    let customerSearchTerm = "";
+    let selectedHistoryCustomerId = "";
+
+    const nurseForm = document.getElementById("nurseForm");
+    const requestForm = document.getElementById("requestForm");
+    const suggestForm = document.getElementById("suggestForm");
+    const telegramForm = document.getElementById("telegramForm");
+    const customerProfileForm = document.getElementById("customerProfileForm");
+    const packageForm = document.getElementById("packageForm");
+    const assignPackageForm = document.getElementById("assignPackageForm");
+    const packageConversionForm = document.getElementById("packageConversionForm");
+    const scheduleForm = document.getElementById("scheduleForm");
+
+    const nurseCity = document.getElementById("nurseCity");
+    const nurseDistrict = document.getElementById("nurseDistrict");
+    const customerCity = document.getElementById("customerCity");
+    const customerDistrict = document.getElementById("customerDistrict");
+    const profileCity = document.getElementById("profileCity");
+    const profileDistrict = document.getElementById("profileDistrict");
+
+    const nurseTableBody = document.getElementById("nurseTableBody");
+    const requestList = document.getElementById("requestList");
+    const requestSelect = document.getElementById("requestSelect");
+    const suggestionList = document.getElementById("suggestionList");
+    const assignmentList = document.getElementById("assignmentList");
+    const telegramStatusBanner = document.getElementById("telegramStatusBanner");
+    const syncTelegramButton = document.getElementById("syncTelegramButton");
+    const customerProfileList = document.getElementById("customerProfileList");
+    const customerServiceHistory = document.getElementById("customerServiceHistory");
+    const customerSearchInput = document.getElementById("customerSearchInput");
+    const customerSearchClear = document.getElementById("customerSearchClear");
+    const profileResetButton = document.getElementById("profileResetButton");
+    const scheduleNurseSelect = document.getElementById("scheduleNurseSelect");
+    const scheduleCustomerSelect = document.getElementById("scheduleCustomerSelect");
+    const scheduleRequestSelect = document.getElementById("scheduleRequestSelect");
+    const schedulePackageAssignmentSelect = document.getElementById("schedulePackageAssignmentSelect");
+    const packageTableBody = document.getElementById("packageTableBody");
+    const assignedPackageTableBody = document.getElementById("assignedPackageTableBody");
+    const assignPackageCustomer = document.getElementById("assignPackageCustomer");
+    const assignPackageSelect = document.getElementById("assignPackageSelect");
+    const assignPackageDate = document.getElementById("assignPackageDate");
+    const conversionCustomerSelect = document.getElementById("conversionCustomerSelect");
+    const conversionSourceAssignment = document.getElementById("conversionSourceAssignment");
+    const conversionTargetPackage = document.getElementById("conversionTargetPackage");
+    const conversionHistoryTableBody = document.getElementById("conversionHistoryTableBody");
+    const conversionApprovalBy = document.getElementById("conversionApprovalBy");
+    const conversionApprovedTargetSessions = document.getElementById("conversionApprovedTargetSessions");
+    const scheduleTableBody = document.getElementById("scheduleTableBody");
+    const scheduleDate = document.getElementById("scheduleDate");
+    const scheduleDateFilter = document.getElementById("scheduleDateFilter");
+    const reportDate = document.getElementById("reportDate");
+    const reportMonth = document.getElementById("reportMonth");
+    const reportTableBody = document.getElementById("reportTableBody");
+    const reportMonthTotal = document.getElementById("reportMonthTotal");
+    const noraLanding = document.getElementById("noraLanding");
+    const detailsGrid = document.getElementById("detailsGrid");
+    const overviewHub = document.getElementById("overviewHub");
+    const detailToolbar = document.getElementById("detailToolbar");
+    const backToSectionListButton = document.getElementById("backToSectionListButton");
+    const detailSections = detailsGrid ? Array.from(detailsGrid.querySelectorAll("article.card[data-module]")) : [];
+    const overviewHubButtons = detailsGrid ? Array.from(detailsGrid.querySelectorAll("[data-open-module]")) : [];
+    const mainOverviewSection = document.getElementById("mainOverviewSection");
+    const enterMainOverviewButton = document.getElementById("enterMainOverviewButton");
+    const warningList = document.getElementById("warningList");
+    const refreshWarningsButton = document.getElementById("refreshWarningsButton");
+    const opsTodayTotal = document.getElementById("opsTodayTotal");
+    const opsTodayUnassigned = document.getElementById("opsTodayUnassigned");
+    const opsTodayIssues = document.getElementById("opsTodayIssues");
+    const opsBusyList = document.getElementById("opsBusyList");
+    const opsFreeList = document.getElementById("opsFreeList");
+
+    init();
+
+    function init() {
+      setupOverviewLandingMode();
+      bindDistrictOptions(nurseCity, nurseDistrict);
+      bindDistrictOptions(customerCity, customerDistrict);
+      bindDistrictOptions(profileCity, profileDistrict);
+
+      nurseCity.addEventListener("change", () => fillDistrictSelect(nurseCity.value, nurseDistrict));
+      customerCity.addEventListener("change", () => fillDistrictSelect(customerCity.value, customerDistrict));
+      profileCity.addEventListener("change", () => fillDistrictSelect(profileCity.value, profileDistrict));
+
+      nurseForm.addEventListener("submit", onAddNurse);
+      requestForm.addEventListener("submit", onAddRequest);
+      suggestForm.addEventListener("submit", onSuggest);
+      telegramForm.addEventListener("submit", onSaveTelegramConfig);
+      customerProfileForm.addEventListener("submit", onAddCustomerProfile);
+      packageForm.addEventListener("submit", onAddPackage);
+      assignPackageForm.addEventListener("submit", onAssignPackageToCustomer);
+      packageConversionForm.addEventListener("submit", onConvertPackage);
+      profileResetButton.addEventListener("click", resetCustomerForm);
+      scheduleForm.addEventListener("submit", onAddSchedule);
+      scheduleCustomerSelect.addEventListener("change", populateSchedulePackageAssignmentOptions);
+      conversionCustomerSelect.addEventListener("change", populateConversionSourceAssignments);
+      customerSearchInput.addEventListener("input", (event) => {
+        customerSearchTerm = event.target.value.trim().toLowerCase();
+        renderCustomerProfiles();
+      });
+      customerSearchClear.addEventListener("click", () => {
+        customerSearchTerm = "";
+        customerSearchInput.value = "";
+        renderCustomerProfiles();
+      });
+      scheduleDateFilter.addEventListener("change", () => {
+        renderScheduleBoard();
+        renderWarnings();
+        reportDate.value = scheduleDateFilter.value;
+        renderNurseShiftReport();
+      });
+      reportDate.addEventListener("change", () => renderNurseShiftReport());
+      reportMonth.addEventListener("change", () => renderNurseShiftReport());
+      refreshWarningsButton.addEventListener("click", () => renderWarnings());
+      syncTelegramButton.addEventListener("click", () => syncTelegramConfirmations(true));
+
+      const today = new Date().toISOString().slice(0, 10);
+      const currentMonth = today.slice(0, 7);
+      scheduleDate.value = today;
+      scheduleDateFilter.value = today;
+      reportDate.value = today;
+      reportMonth.value = currentMonth;
+      assignPackageDate.value = today;
+
+      bootstrapCustomersFromRequests();
+      normalizeStoredDistricts();
+
+      renderAll();
+      startPolling();
+    }
+
+    function setupOverviewLandingMode() {
+      if (enterMainOverviewButton) {
+        enterMainOverviewButton.addEventListener("click", () => {
+          showModuleOverview();
+        });
+      }
+
+      overviewHubButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const moduleName = button.getAttribute("data-open-module");
+          if (!moduleName) {
+            return;
+          }
+          showDetailModule(moduleName);
+        });
+      });
+
+      backToSectionListButton.addEventListener("click", () => {
+        showModuleOverview();
+      });
+
+      // Skip the first landing page and open the module overview immediately.
+      showModuleOverview(false);
+    }
+
+    function showModuleOverview(shouldScroll = true) {
+      document.body.classList.remove("overview-only");
+      document.body.classList.remove("detail-view");
+      if (noraLanding) {
+        noraLanding.hidden = true;
+      }
+      if (overviewHub) {
+        overviewHub.hidden = false;
+      }
+      if (detailToolbar) {
+        detailToolbar.hidden = true;
+      }
+      detailSections.forEach((section) => {
+        section.hidden = true;
+      });
+      if (overviewHub && shouldScroll) {
+        overviewHub.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function showDetailModule(moduleName) {
+      document.body.classList.remove("overview-only");
+      document.body.classList.add("detail-view");
+      if (noraLanding) {
+        noraLanding.hidden = true;
+      }
+      if (overviewHub) {
+        overviewHub.hidden = true;
+      }
+      if (detailToolbar) {
+        detailToolbar.hidden = false;
+      }
+
+      let firstVisible = null;
+      detailSections.forEach((section) => {
+        const isMatch = section.getAttribute("data-module") === moduleName;
+        section.hidden = !isMatch;
+        if (isMatch && !firstVisible) {
+          firstVisible = section;
+        }
+      });
+
+      if (firstVisible) {
+        firstVisible.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function showOverviewOnly(scrollToTop) {
+      document.body.classList.add("overview-only");
+      if (noraLanding) {
+        noraLanding.hidden = false;
+      }
+      detailSections.forEach((section) => {
+        section.hidden = false;
+      });
+      if (scrollToTop) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function bindDistrictOptions(citySelect, districtSelect) {
+      fillDistrictSelect(citySelect.value, districtSelect);
+    }
+
+    function fillDistrictSelect(cityCode, targetSelect) {
+      const districts = Object.keys(DISTRICT_COORDS[cityCode] || {});
+      targetSelect.innerHTML = districts
+        .map((district) => `<option value="${district}">${district}</option>`)
+        .join("");
+    }
+
+    function getCanonicalDistrict(cityCode, districtName) {
+      const normalized = normalizeText(districtName);
+      const aliases = DISTRICT_ALIASES[cityCode] || {};
+      if (aliases[normalized]) {
+        return aliases[normalized];
+      }
+      const candidates = Object.keys(DISTRICT_COORDS[cityCode] || {});
+      return candidates.find((name) => normalizeText(name) === normalized) || districtName;
+    }
+
+    function getDistrictCoord(cityCode, districtName) {
+      const canonical = getCanonicalDistrict(cityCode, districtName);
+      return (DISTRICT_COORDS[cityCode] || {})[canonical];
+    }
+
+    function normalizeStoredDistricts() {
+      let changed = false;
+
+      nurses = nurses.map((item) => {
+        const canonical = getCanonicalDistrict(item.city, item.district);
+        if (canonical !== item.district) {
+          changed = true;
+        }
+        return { ...item, district: canonical };
+      });
+
+      requests = requests.map((item) => {
+        const canonical = getCanonicalDistrict(item.city, item.district);
+        if (canonical !== item.district) {
+          changed = true;
+        }
+        return { ...item, district: canonical };
+      });
+
+      customers = customers.map((item) => {
+        const canonical = getCanonicalDistrict(item.city, item.district);
+        if (canonical !== item.district) {
+          changed = true;
+        }
+        return { ...item, district: canonical };
+      });
+
+      if (changed) {
+        saveToStorage(STORAGE_KEYS.nurses, nurses);
+        saveToStorage(STORAGE_KEYS.requests, requests);
+        saveToStorage(STORAGE_KEYS.customers, customers);
+      }
+    }
+
+    function onAddNurse(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("nurseName").value.trim();
+      const status = document.getElementById("nurseStatus").value;
+      const city = nurseCity.value;
+      const district = nurseDistrict.value;
+      const telegramChatId = document.getElementById("nurseTelegramChatId").value.trim();
+
+      if (!name) {
+        setTelegramBanner("Vui lòng nhập họ tên điều dưỡng.", true);
+        return;
+      }
+
+      nurses.unshift({
+        id: crypto.randomUUID(),
+        name,
+        status,
+        city,
+        district,
+        skills: [],
+        telegramChatId
+      });
+
+      saveToStorage(STORAGE_KEYS.nurses, nurses);
+      nurseForm.reset();
+      document.getElementById("nurseStatus").value = "RANH";
+      nurseCity.value = "HN";
+      fillDistrictSelect("HN", nurseDistrict);
+      setTelegramBanner("Đã thêm điều dưỡng thành công.", false);
+      renderAll();
+    }
+
+    function onSaveTelegramConfig(event) {
+      event.preventDefault();
+
+      telegramConfig = {
+        mode: document.getElementById("telegramMode").value,
+        botToken: document.getElementById("telegramBotToken").value.trim(),
+        dispatchUrl: document.getElementById("telegramDispatchUrl").value.trim(),
+        syncUrl: document.getElementById("telegramSyncUrl").value.trim(),
+        pollSeconds: Number(document.getElementById("telegramPollSeconds").value) || 15
+      };
+
+      saveToStorage(STORAGE_KEYS.telegramConfig, telegramConfig);
+      startPolling();
+      renderTelegramConfig();
+      setTelegramBanner("Đã lưu cấu hình Telegram.", false);
+    }
+
+    function onAddRequest(event) {
+      event.preventDefault();
+
+      const customerName = document.getElementById("customerName").value.trim();
+      const servicePackage = document.getElementById("servicePackage").value;
+      const totalSessions = Math.max(1, Number(document.getElementById("serviceSessions").value) || 1);
+      const city = customerCity.value;
+      const district = customerDistrict.value;
+      const address = document.getElementById("customerAddress").value.trim();
+      const requestTime = document.getElementById("requestTime").value;
+
+      if (!customerName || !address || !requestTime) {
+        return;
+      }
+
+      requests.unshift({
+        id: crypto.randomUUID(),
+        customerName,
+        servicePackage,
+        totalSessions,
+        city,
+        district,
+        address,
+        requestTime,
+        createdAt: new Date().toISOString()
+      });
+
+      // Auto-upsert a light customer profile from request intake to reduce missed records.
+      upsertCustomerFromRequest(customerName, city, district, address);
+
+      saveToStorage(STORAGE_KEYS.requests, requests);
+      requestForm.reset();
+      document.getElementById("serviceSessions").value = "1";
+      customerCity.value = "HN";
+      fillDistrictSelect("HN", customerDistrict);
+      renderAll();
+    }
+
+    function onAddCustomerProfile(event) {
+      event.preventDefault();
+
+      const profileId = document.getElementById("profileId").value.trim();
+      const name = document.getElementById("profileName").value.trim();
+      const phone = document.getElementById("profilePhone").value.trim();
+      const contractCode = document.getElementById("profileContractCode").value.trim();
+      const city = profileCity.value;
+      const district = profileDistrict.value;
+      const address = document.getElementById("profileAddress").value.trim();
+      const specialNote = document.getElementById("profileSpecialNote").value.trim();
+      const treatmentPlan = document.getElementById("profilePlan").value.trim();
+      const medicalNote = document.getElementById("profileNote").value.trim();
+
+      if (!name || !phone || !contractCode || !address || !treatmentPlan) {
+        return;
+      }
+
+      const payload = {
+        name,
+        phone,
+        contractCode,
+        city,
+        district,
+        address,
+        specialNote,
+        treatmentPlan,
+        medicalNote
+      };
+
+      if (profileId) {
+        customers = customers.map((customer) => {
+          if (customer.id !== profileId) {
+            return customer;
+          }
+          return {
+            ...customer,
+            ...payload,
+            updatedAt: new Date().toISOString()
+          };
+        });
+      } else {
+        customers.unshift({
+          id: crypto.randomUUID(),
+          ...payload,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      saveToStorage(STORAGE_KEYS.customers, customers);
+      resetCustomerForm();
+      renderAll();
+    }
+
+    function onAddSchedule(event) {
+      event.preventDefault();
+
+      const date = scheduleDate.value;
+      const customerId = scheduleCustomerSelect.value;
+      const nurseId = scheduleNurseSelect.value;
+      const requestId = scheduleRequestSelect.value;
+      const packageAssignmentId = schedulePackageAssignmentSelect.value;
+      const startTime = document.getElementById("scheduleStartTime").value;
+      const endTime = document.getElementById("scheduleEndTime").value;
+      const serviceStatus = document.getElementById("scheduleServiceStatus").value;
+      const note = document.getElementById("scheduleNote").value.trim();
+
+      if (!date || !customerId || !nurseId || !startTime || !endTime) {
+        return;
+      }
+
+      const customer = customers.find((c) => c.id === customerId);
+      const nurse = nurses.find((n) => n.id === nurseId);
+      const linkedRequest = requestId ? requests.find((r) => r.id === requestId) : null;
+      const packageAssignment = packageAssignmentId ? customerPackages.find((x) => x.id === packageAssignmentId) : null;
+      if (!customer || !nurse) {
+        return;
+      }
+
+      if (packageAssignment) {
+        const remainingBefore = getRemainingSessions(packageAssignment.id);
+        if (remainingBefore <= 0) {
+          setTelegramBanner(`Cảnh báo: Gói ${packageAssignment.packageName} của khách ${customer.name} đã hết buổi nhưng vẫn lên ca.`, true);
+        }
+      }
+
+      schedules.unshift({
+        id: crypto.randomUUID(),
+        date,
+        customerId,
+        customerName: customer.name,
+        nurseId,
+        nurseName: nurse.name,
+        requestId: requestId || "",
+        packageAssignmentId: packageAssignment ? packageAssignment.id : "",
+        servicePackage: packageAssignment ? packageAssignment.packageName : (linkedRequest ? linkedRequest.servicePackage : ""),
+        serviceStatus,
+        startTime,
+        endTime,
+        note,
+        createdAt: new Date().toISOString()
+      });
+
+      saveToStorage(STORAGE_KEYS.schedules, schedules);
+      scheduleForm.reset();
+      scheduleDate.value = date;
+      scheduleDateFilter.value = date;
+      populateSchedulePackageAssignmentOptions();
+      renderAll();
+    }
+
+    function onAddPackage(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("packageName").value.trim();
+      const totalSessions = Math.max(1, Number(document.getElementById("packageSessions").value) || 1);
+      const duration = Number(document.getElementById("packageDuration").value);
+      const tier = document.getElementById("packageTier").value;
+      const hasDoctor = document.getElementById("packageDoctor").value === "YES";
+
+      if (!name) {
+        return;
+      }
+
+      packages.unshift({
+        id: crypto.randomUUID(),
+        name,
+        totalSessions,
+        duration,
+        tier,
+        hasDoctor
+      });
+
+      saveToStorage(STORAGE_KEYS.packages, packages);
+      packageForm.reset();
+      document.getElementById("packageSessions").value = "10";
+      document.getElementById("packageDuration").value = "60";
+      document.getElementById("packageTier").value = "Cơ bản";
+      document.getElementById("packageDoctor").value = "NO";
+      renderAll();
+    }
+
+    function onAssignPackageToCustomer(event) {
+      event.preventDefault();
+
+      const customerId = assignPackageCustomer.value;
+      const packageId = assignPackageSelect.value;
+      const assignedDate = assignPackageDate.value;
+
+      const customer = customers.find((x) => x.id === customerId);
+      const pkg = packages.find((x) => x.id === packageId);
+      if (!customer || !pkg || !assignedDate) {
+        return;
+      }
+
+      customerPackages.unshift({
+        id: crypto.randomUUID(),
+        customerId,
+        customerName: customer.name,
+        packageId: pkg.id,
+        packageName: pkg.name,
+        totalSessions: pkg.totalSessions,
+        assignedDate,
+        createdAt: new Date().toISOString()
+      });
+
+      saveToStorage(STORAGE_KEYS.customerPackages, customerPackages);
+      populateSchedulePackageAssignmentOptions();
+      renderAll();
+    }
+
+    function onConvertPackage(event) {
+      event.preventDefault();
+
+      const customerId = conversionCustomerSelect.value;
+      const sourceAssignmentId = conversionSourceAssignment.value;
+      const targetPackageId = conversionTargetPackage.value;
+      const sourceSessions = Math.max(1, Number(document.getElementById("conversionSourceSessions").value) || 1);
+      const approver = document.getElementById("conversionApprover").value.trim();
+      const reason = document.getElementById("conversionReason").value.trim();
+
+      const customer = customers.find((x) => x.id === customerId);
+      const sourceAssignment = customerPackages.find((x) => x.id === sourceAssignmentId);
+      const targetPackage = packages.find((x) => x.id === targetPackageId);
+      if (!customer || !sourceAssignment || !targetPackage || !reason) {
+        return;
+      }
+
+      const sourceRemaining = getRemainingSessions(sourceAssignment.id);
+      if (sourceSessions > sourceRemaining) {
+        setTelegramBanner(`Không thể đổi: gói nguồn chỉ còn ${sourceRemaining} buổi.`, true);
+        return;
+      }
+
+      const sourceName = normalizeText(sourceAssignment.packageName);
+      const targetName = normalizeText(targetPackage.name);
+      const isMotherToBaby = sourceName.includes("me") && targetName.includes("be");
+      const isBabyToMother = sourceName.includes("be") && targetName.includes("me");
+
+      const conversionRecord = {
+        id: crypto.randomUUID(),
+        customerId,
+        customerName: customer.name,
+        sourceAssignmentId: sourceAssignment.id,
+        sourcePackageName: sourceAssignment.packageName,
+        targetPackageId: targetPackage.id,
+        targetPackageName: targetPackage.name,
+        sourceSessions,
+        targetSessions: 0,
+        status: "PENDING_SUPPORT",
+        approver: "",
+        reason,
+        createdAt: new Date().toISOString(),
+        approvedAt: ""
+      };
+
+      if (isMotherToBaby) {
+        const targetSessions = sourceSessions * 2;
+        applyApprovedConversion({
+          conversionRecord,
+          targetSessions,
+          approver: approver || "Điều hành tự động"
+        });
+        setTelegramBanner("Đã đổi gói tự động theo quy đổi 1 buổi mẹ = 2 buổi bé.", false);
+      } else if (isBabyToMother) {
+        packageConversions.unshift(conversionRecord);
+        saveToStorage(STORAGE_KEYS.packageConversions, packageConversions);
+        setTelegramBanner("Đã gửi yêu cầu đổi bé -> mẹ cho điều hành ca hỗ trợ xử lý khách.", true);
+      } else {
+        packageConversions.unshift(conversionRecord);
+        saveToStorage(STORAGE_KEYS.packageConversions, packageConversions);
+        setTelegramBanner("Đã ghi nhận yêu cầu chuyển đổi và chờ điều hành duyệt.", false);
+      }
+
+      packageConversionForm.reset();
+      document.getElementById("conversionSourceSessions").value = "1";
+      conversionApprovedTargetSessions.value = "1";
+      renderAll();
+    }
+
+    function applyApprovedConversion({ conversionRecord, targetSessions, approver }) {
+      const sourceAssignment = customerPackages.find((x) => x.id === conversionRecord.sourceAssignmentId);
+      const targetPackage = packages.find((x) => x.id === conversionRecord.targetPackageId);
+      const customer = customers.find((x) => x.id === conversionRecord.customerId);
+      if (!sourceAssignment || !targetPackage || !customer) {
+        return;
+      }
+
+      customerPackages = customerPackages.map((item) => {
+        if (item.id !== sourceAssignment.id) {
+          return item;
+        }
+        return {
+          ...item,
+          totalSessions: Math.max(0, Number(item.totalSessions) - Number(conversionRecord.sourceSessions))
+        };
+      });
+
+      const existingTarget = customerPackages.find((item) => item.customerId === customer.id && item.packageId === targetPackage.id);
+      if (existingTarget) {
+        customerPackages = customerPackages.map((item) => {
+          if (item.id !== existingTarget.id) {
+            return item;
+          }
+          return {
+            ...item,
+            totalSessions: Number(item.totalSessions) + Number(targetSessions)
+          };
+        });
+      } else {
+        customerPackages.unshift({
+          id: crypto.randomUUID(),
+          customerId: customer.id,
+          customerName: customer.name,
+          packageId: targetPackage.id,
+          packageName: targetPackage.name,
+          totalSessions: Number(targetSessions),
+          assignedDate: new Date().toISOString().slice(0, 10),
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      const approvedRecord = {
+        ...conversionRecord,
+        targetSessions: Number(targetSessions),
+        status: "APPROVED",
+        approver,
+        approvedAt: new Date().toISOString()
+      };
+
+      const index = packageConversions.findIndex((x) => x.id === conversionRecord.id);
+      if (index >= 0) {
+        packageConversions[index] = approvedRecord;
+      } else {
+        packageConversions.unshift(approvedRecord);
+      }
+
+      saveToStorage(STORAGE_KEYS.customerPackages, customerPackages);
+      saveToStorage(STORAGE_KEYS.packageConversions, packageConversions);
+    }
+
+    function approveConversionRequest(conversionId) {
+      const request = packageConversions.find((item) => item.id === conversionId);
+      if (!request || request.status !== "PENDING_SUPPORT") {
+        return;
+      }
+
+      const approver = conversionApprovalBy.value.trim();
+      const targetSessions = Math.max(1, Number(conversionApprovedTargetSessions.value) || 1);
+      if (!approver) {
+        setTelegramBanner("Vui lòng chọn người duyệt trước khi bấm Duyệt đổi.", true);
+        return;
+      }
+
+      const sourceRemaining = getRemainingSessions(request.sourceAssignmentId);
+      if (request.sourceSessions > sourceRemaining) {
+        setTelegramBanner(`Không thể duyệt: gói nguồn chỉ còn ${sourceRemaining} buổi.`, true);
+        return;
+      }
+
+      applyApprovedConversion({ conversionRecord: request, targetSessions, approver });
+      setTelegramBanner("Đã duyệt yêu cầu chuyển đổi gói thành công.", false);
+      renderAll();
+    }
+
+    function onSuggest(event) {
+      event.preventDefault();
+
+      const requestId = requestSelect.value;
+      const topN = Number(document.getElementById("topN").value);
+      const request = requests.find((r) => r.id === requestId);
+
+      if (!request) {
+        suggestionList.innerHTML = `<p class="empty">Không tìm thấy yêu cầu để gợi ý.</p>`;
+        return;
+      }
+
+      const candidates = nurses
+        .filter((nurse) => nurse.status === "RANH")
+        .map((nurse) => {
+          const distanceKm = calculateDistanceKm(
+            getDistrictCoord(nurse.city, nurse.district),
+            getDistrictCoord(request.city, request.district)
+          );
+          return {
+            ...nurse,
+            distanceKm,
+            cityMatch: nurse.city === request.city ? 1 : 0
+          };
+        })
+        .sort((a, b) => {
+          if (b.cityMatch !== a.cityMatch) {
+            return b.cityMatch - a.cityMatch;
+          }
+          return a.distanceKm - b.distanceKm;
+        })
+        .slice(0, topN);
+
+      renderSuggestions(candidates, request);
+    }
+
+    function renderAll() {
+      renderOperationsDashboard();
+      renderNurseTable();
+      renderRequests();
+      renderRequestSelect();
+      renderTelegramConfig();
+      renderAssignments();
+      renderCustomerProfiles();
+      renderCustomerServiceHistory();
+      renderPackageCatalog();
+      renderCustomerPackageTracking();
+      renderConversionHistory();
+      populateScheduleSelectors();
+      renderScheduleBoard();
+      renderNurseShiftReport();
+      renderWarnings();
+      suggestionList.innerHTML = "";
+    }
+
+    function renderOperationsDashboard() {
+      const today = new Date().toISOString().slice(0, 10);
+      const todaySchedules = schedules.filter((item) => item.date === today);
+
+      const unassignedCount = todaySchedules.filter((item) => {
+        if (!item.nurseId) {
+          return true;
+        }
+        return !nurses.some((nurse) => nurse.id === item.nurseId);
+      }).length;
+
+      const issueCount = countTodayShiftIssues(todaySchedules);
+
+      opsTodayTotal.textContent = String(todaySchedules.length);
+      opsTodayUnassigned.textContent = String(unassignedCount);
+      opsTodayIssues.textContent = String(issueCount);
+
+      const busyNurses = nurses.filter((nurse) => nurse.status === "CO_CA" || nurse.status === "CHO_XN");
+      const freeNurses = nurses.filter((nurse) => nurse.status === "RANH");
+
+      opsBusyList.innerHTML = busyNurses.length
+        ? busyNurses.map((nurse) => {
+          const shiftText = getNurseShiftSummary(nurse.id, today);
+          return `<p>${escapeHtml(nurse.name)} (${STATUS_META[nurse.status].label})<span class="time">${escapeHtml(shiftText)}</span></p>`;
+        }).join("")
+        : `<p>Không có điều dưỡng bận.</p>`;
+
+      opsFreeList.innerHTML = freeNurses.length
+        ? freeNurses.map((nurse) => {
+          const shiftText = getNurseShiftSummary(nurse.id, today);
+          return `<p>${escapeHtml(nurse.name)}<span class="time">${escapeHtml(shiftText)}</span></p>`;
+        }).join("")
+        : `<p>Không có điều dưỡng rảnh.</p>`;
+    }
+
+    function getNurseShiftSummary(nurseId, date) {
+      const nurseSchedules = schedules
+        .filter((item) => item.nurseId === nurseId && item.date === date)
+        .sort((a, b) => (`${a.startTime}` > `${b.startTime}` ? 1 : -1));
+
+      if (nurseSchedules.length === 0) {
+        return "- Rảnh cả ngày";
+      }
+
+      const frames = nurseSchedules.map((item) => `${item.startTime}-${item.endTime}`);
+      return `- Bận: ${frames.join(", ")}`;
+    }
+
+    function countTodayShiftIssues(todaySchedules) {
+      let count = 0;
+
+      todaySchedules.forEach((item) => {
+        const nurse = nurses.find((n) => n.id === item.nurseId);
+
+        if (!item.startTime || !item.endTime || item.startTime >= item.endTime) {
+          count += 1;
+          return;
+        }
+
+        if (!nurse || nurse.status === "NGHI_PHEP") {
+          count += 1;
+          return;
+        }
+
+        if (item.packageAssignmentId) {
+          const remaining = getRemainingSessions(item.packageAssignmentId);
+          if (remaining <= 0 && item.serviceStatus !== "DONE") {
+            count += 1;
+            return;
+          }
+        }
+
+        const overlap = todaySchedules.some((other) => {
+          if (other.id === item.id) {
+            return false;
+          }
+          if (other.nurseId !== item.nurseId) {
+            return false;
+          }
+          return isOverlap(item.startTime, item.endTime, other.startTime, other.endTime);
+        });
+        if (overlap) {
+          count += 1;
+        }
+      });
+
+      return count;
+    }
+
+    function renderPackageCatalog() {
+      if (packages.length === 0) {
+        packageTableBody.innerHTML = `<tr><td colspan="5" class="empty">Chưa có gói dịch vụ.</td></tr>`;
+      } else {
+        packageTableBody.innerHTML = packages
+          .map((pkg) => `
+            <tr>
+              <td>${escapeHtml(pkg.name)}</td>
+              <td>${pkg.totalSessions}</td>
+              <td>${pkg.duration} phút</td>
+              <td>${escapeHtml(pkg.tier)}</td>
+              <td>${pkg.hasDoctor ? "Có" : "Không"}</td>
+            </tr>
+          `)
+          .join("");
+      }
+
+      assignPackageSelect.innerHTML = packages.length
+        ? packages.map((pkg) => `<option value="${pkg.id}">${escapeHtml(pkg.name)} | ${pkg.totalSessions} buổi | ${pkg.duration}p</option>`).join("")
+        : `<option value="">Chưa có gói</option>`;
+    }
+
+    function renderCustomerPackageTracking() {
+      if (customerPackages.length === 0) {
+        assignedPackageTableBody.innerHTML = `<tr><td colspan="7" class="empty">Chưa gán gói cho khách nào.</td></tr>`;
+        return;
+      }
+
+      assignedPackageTableBody.innerHTML = customerPackages
+        .map((item) => {
+          const usedSessions = getUsedSessions(item.id);
+          const remaining = getRemainingSessions(item.id);
+          return `
+            <tr>
+              <td>${escapeHtml(item.customerName)}</td>
+              <td>${escapeHtml(item.packageName)}</td>
+              <td>${item.totalSessions}</td>
+              <td>${usedSessions}</td>
+              <td>${remaining}</td>
+              <td>${formatDateOnly(item.assignedDate)}</td>
+              <td><button class="btn-muted" type="button" data-revoke-package="${item.id}">Thu hồi gói</button></td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      document.querySelectorAll("[data-revoke-package]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const assignmentId = event.target.getAttribute("data-revoke-package");
+          revokeAssignedPackage(assignmentId);
+        });
+      });
+    }
+
+    function renderConversionHistory() {
+      if (packageConversions.length === 0) {
+        conversionHistoryTableBody.innerHTML = `<tr><td colspan="9" class="empty">Chưa có lịch sử chuyển đổi gói.</td></tr>`;
+        return;
+      }
+
+      conversionHistoryTableBody.innerHTML = packageConversions
+        .map((item) => {
+          const convertText = `${item.sourceSessions} -> ${item.targetSessions || "?"}`;
+          const statusText = item.status === "APPROVED" ? "Đã duyệt" : "Chờ điều hành";
+          const action = item.status === "PENDING_SUPPORT"
+            ? `<button class="btn-muted" type="button" data-approve-conversion="${item.id}">Duyệt đổi</button>`
+            : "-";
+          return `
+            <tr>
+              <td>${escapeHtml(item.customerName)}</td>
+              <td>${escapeHtml(item.sourcePackageName)}</td>
+              <td>${escapeHtml(item.targetPackageName)}</td>
+              <td>${escapeHtml(convertText)}</td>
+              <td>${escapeHtml(statusText)}</td>
+              <td>${escapeHtml(item.approver || "-")}</td>
+              <td>${escapeHtml(item.reason || "-")}</td>
+              <td>${formatDateTime(item.approvedAt || item.createdAt)}</td>
+              <td>${action}</td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      document.querySelectorAll("[data-approve-conversion]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const conversionId = event.target.getAttribute("data-approve-conversion");
+          approveConversionRequest(conversionId);
+        });
+      });
+    }
+
+    function revokeAssignedPackage(assignmentId) {
+      const target = customerPackages.find((item) => item.id === assignmentId);
+      if (!target) {
+        return;
+      }
+
+      customerPackages = customerPackages.filter((item) => item.id !== assignmentId);
+      schedules = schedules.map((schedule) => {
+        if (schedule.packageAssignmentId !== assignmentId) {
+          return schedule;
+        }
+        return {
+          ...schedule,
+          packageAssignmentId: "",
+          note: schedule.note ? `${schedule.note} | [Đã thu hồi gói]` : "[Đã thu hồi gói]"
+        };
+      });
+
+      saveToStorage(STORAGE_KEYS.customerPackages, customerPackages);
+      saveToStorage(STORAGE_KEYS.schedules, schedules);
+      setTelegramBanner(`Đã thu hồi gói ${target.packageName} của khách ${target.customerName}.`, false);
+      renderAll();
+    }
+
+    function getUsedSessions(packageAssignmentId) {
+      return schedules.filter((s) => s.packageAssignmentId === packageAssignmentId && s.serviceStatus === "DONE").length;
+    }
+
+    function getRemainingSessions(packageAssignmentId) {
+      const assignment = customerPackages.find((item) => item.id === packageAssignmentId);
+      if (!assignment) {
+        return 0;
+      }
+      const used = getUsedSessions(packageAssignmentId);
+      return Math.max(0, Number(assignment.totalSessions) - used);
+    }
+
+    function openCustomerForEdit(customerId) {
+      const customer = customers.find((item) => item.id === customerId);
+      if (!customer) {
+        return;
+      }
+
+      document.getElementById("profileId").value = customer.id;
+      document.getElementById("profileName").value = customer.name || "";
+      document.getElementById("profilePhone").value = customer.phone || "";
+      document.getElementById("profileContractCode").value = customer.contractCode || "";
+      profileCity.value = customer.city || "HN";
+      fillDistrictSelect(profileCity.value, profileDistrict);
+      profileDistrict.value = customer.district || profileDistrict.value;
+      document.getElementById("profileAddress").value = customer.address || "";
+      document.getElementById("profileSpecialNote").value = customer.specialNote || "";
+      document.getElementById("profilePlan").value = customer.treatmentPlan || "";
+      document.getElementById("profileNote").value = customer.medicalNote || "";
+    }
+
+    function resetCustomerForm() {
+      customerProfileForm.reset();
+      document.getElementById("profileId").value = "";
+      profileCity.value = "HN";
+      fillDistrictSelect("HN", profileDistrict);
+    }
+
+    function renderCustomerServiceHistory() {
+      if (!selectedHistoryCustomerId) {
+        customerServiceHistory.innerHTML = `<p class="empty">Chọn "Xem lịch sử" ở một khách để xem chi tiết.</p>`;
+        return;
+      }
+
+      const customer = customers.find((item) => item.id === selectedHistoryCustomerId);
+      if (!customer) {
+        customerServiceHistory.innerHTML = `<p class="empty">Khách hàng không còn tồn tại trong dữ liệu.</p>`;
+        return;
+      }
+
+      const customerRequests = requests.filter((request) => request.customerName === customer.name);
+      const customerSchedules = schedules.filter((schedule) => schedule.customerId === customer.id || schedule.customerName === customer.name);
+      const customerAssignedPackages = customerPackages.filter((item) => item.customerId === customer.id);
+
+      const serviceStats = new Map();
+
+      customerAssignedPackages.forEach((pkgAssignment) => {
+        const doneCount = schedules.filter((s) => s.packageAssignmentId === pkgAssignment.id && s.serviceStatus === "DONE").length;
+        const pendingCount = Math.max(0, Number(pkgAssignment.totalSessions) - doneCount);
+        serviceStats.set(pkgAssignment.packageName, {
+          registered: Number(pkgAssignment.totalSessions),
+          done: doneCount,
+          pending: pendingCount
+        });
+      });
+
+      customerRequests.forEach((request) => {
+        const key = request.servicePackage || "Khác";
+        if (!serviceStats.has(key)) {
+          serviceStats.set(key, { registered: 0, done: 0, pending: 0 });
+        }
+        const item = serviceStats.get(key);
+        item.registered = Math.max(item.registered, Math.max(1, Number(request.totalSessions) || 1));
+      });
+
+      customerSchedules
+        .filter((schedule) => !schedule.packageAssignmentId)
+        .forEach((schedule) => {
+          const key = schedule.servicePackage || (schedule.requestId ? (requests.find((r) => r.id === schedule.requestId) || {}).servicePackage : "Khác") || "Khác";
+          if (!serviceStats.has(key)) {
+            serviceStats.set(key, { registered: 0, done: 0, pending: 0 });
+          }
+          const item = serviceStats.get(key);
+          if (schedule.serviceStatus === "DONE") {
+            item.done += 1;
+          } else {
+            item.pending += 1;
+          }
+        });
+
+      const registeredServices = [];
+      const doneServices = [];
+      const pendingServices = [];
+      const sessionSummary = [];
+
+      Array.from(serviceStats.entries()).forEach(([serviceName, stat]) => {
+        if (stat.registered === 0 && (stat.done > 0 || stat.pending > 0)) {
+          stat.registered = stat.done + stat.pending;
+        }
+
+        if (serviceName === "Khác" && stat.registered === 0 && stat.done === 0 && stat.pending === 0) {
+          return;
+        }
+
+        const remaining = Math.max(0, stat.registered - stat.done);
+        registeredServices.push(`${serviceName} (${stat.registered} buổi đăng ký)`);
+        if (stat.done > 0) {
+          doneServices.push(`${serviceName} (${stat.done} buổi đã làm)`);
+        }
+        if (stat.done === 0 || remaining > 0) {
+          pendingServices.push(`${serviceName} (${remaining} buổi còn lại)`);
+        }
+        sessionSummary.push(`${serviceName}: ĐK ${stat.registered} | Đã làm ${stat.done} | Còn ${remaining}`);
+      });
+
+      const historyRows = [];
+
+      requests
+        .filter((request) => request.customerName === customer.name)
+        .forEach((request) => {
+          historyRows.push({
+            at: request.requestTime || request.createdAt,
+            label: `Yêu cầu dịch vụ: ${request.servicePackage}`,
+            detail: `${request.address} | ${request.district}`
+          });
+        });
+
+      schedules
+        .filter((schedule) => schedule.customerId === customer.id || schedule.customerName === customer.name)
+        .forEach((schedule) => {
+          historyRows.push({
+            at: `${schedule.date}T${schedule.startTime || "00:00"}`,
+            label: `Lịch ca: ${schedule.startTime} - ${schedule.endTime}`,
+            detail: `Điều dưỡng: ${schedule.nurseName}`
+          });
+        });
+
+      assignments
+        .filter((assignment) => assignment.customerName === customer.name)
+        .forEach((assignment) => {
+          historyRows.push({
+            at: assignment.requestedAt || assignment.at,
+            label: `Giao ca Telegram: ${assignment.status || "LEGACY"}`,
+            detail: `Điều dưỡng: ${assignment.nurseName}`
+          });
+        });
+
+      historyRows.sort((a, b) => {
+        const tA = new Date(a.at).getTime() || 0;
+        const tB = new Date(b.at).getTime() || 0;
+        return tB - tA;
+      });
+
+      const statsHtml = `
+        <article class="request-item">
+          <h3>Tổng quan dịch vụ của ${escapeHtml(customer.name)}</h3>
+          <p><strong>Khách đăng ký những dịch vụ:</strong> ${registeredServices.length ? escapeHtml(registeredServices.join("; ")) : "Chưa đăng ký"}</p>
+          <p><strong>Đã làm những dịch vụ:</strong> ${doneServices.length ? escapeHtml(doneServices.join("; ")) : "Chưa làm dịch vụ nào"}</p>
+          <p><strong>Chưa làm dịch vụ nào:</strong> ${pendingServices.length ? escapeHtml(pendingServices.join("; ")) : "Không còn dịch vụ tồn"}</p>
+          <p><strong>Số buổi còn lại:</strong> ${sessionSummary.length ? escapeHtml(sessionSummary.join(" | ")) : "0"}</p>
+        </article>
+      `;
+
+      if (historyRows.length === 0) {
+        customerServiceHistory.innerHTML = `${statsHtml}<p class="empty">Khách ${escapeHtml(customer.name)} chưa có lịch sử phát sinh giao dịch.</p>`;
+        return;
+      }
+
+      const timelineHtml = historyRows
+        .slice(0, 30)
+        .map((row) => `
+          <article class="request-item">
+            <h3>${escapeHtml(row.label)}</h3>
+            <p>${escapeHtml(row.detail)}</p>
+            <div class="meta">
+              <span>${formatDateTime(row.at)}</span>
+              <span>${escapeHtml(customer.name)} | ${escapeHtml(customer.contractCode || "-")}</span>
+            </div>
+          </article>
+        `)
+        .join("");
+
+      customerServiceHistory.innerHTML = `${statsHtml}${timelineHtml}`;
+    }
+
+    function renderCustomerProfiles() {
+      const filteredCustomers = customers.filter((customer) => {
+        if (!customerSearchTerm) {
+          return true;
+        }
+        const haystack = [customer.name, customer.phone, customer.contractCode]
+          .map((x) => String(x || "").toLowerCase())
+          .join(" ");
+        return haystack.includes(customerSearchTerm);
+      });
+
+      if (filteredCustomers.length === 0) {
+        customerProfileList.innerHTML = `<p class="empty">Chưa có hồ sơ khách hàng.</p>`;
+        return;
+      }
+
+      customerProfileList.innerHTML = filteredCustomers
+        .slice(0, 20)
+        .map((customer) => {
+          const cityText = customer.city === "HN" ? "Hà Nội" : "TP.HCM";
+          return `
+            <article class="request-item">
+              <h3>${escapeHtml(customer.name)} - ${escapeHtml(customer.phone)}</h3>
+              <p><strong>Mã hợp đồng:</strong> ${escapeHtml(customer.contractCode || "-")}</p>
+              <p>${cityText} - ${escapeHtml(customer.district)} | ${escapeHtml(customer.address)}</p>
+              <p><strong>Ghi chú đặc biệt:</strong> ${escapeHtml(customer.specialNote || "Không có")}</p>
+              <p><strong>Liệu trình:</strong> ${escapeHtml(customer.treatmentPlan)}</p>
+              <p><strong>Ghi chú:</strong> ${escapeHtml(customer.medicalNote || "Không có")}</p>
+              <div class="row" style="margin-top: 8px;">
+                <button class="btn-muted" type="button" data-edit-customer="${customer.id}">Sửa</button>
+                <button class="btn-primary" type="button" data-history-customer="${customer.id}">Xem lịch sử</button>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      document.querySelectorAll("[data-edit-customer]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const id = event.target.getAttribute("data-edit-customer");
+          openCustomerForEdit(id);
+        });
+      });
+
+      document.querySelectorAll("[data-history-customer]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const id = event.target.getAttribute("data-history-customer");
+          selectedHistoryCustomerId = id;
+          renderCustomerServiceHistory();
+        });
+      });
+    }
+
+    function populateScheduleSelectors() {
+      scheduleCustomerSelect.innerHTML = customers.length
+        ? customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} | ${escapeHtml(customer.phone)} | ${escapeHtml(customer.contractCode || "-")}</option>`).join("")
+        : `<option value="" selected>Chưa có khách hàng</option>`;
+
+      scheduleNurseSelect.innerHTML = nurses.length
+        ? nurses.map((nurse) => `<option value="${nurse.id}">${escapeHtml(nurse.name)} | ${STATUS_META[nurse.status].label}</option>`).join("")
+        : `<option value="" selected>Chưa có điều dưỡng</option>`;
+
+      scheduleCustomerSelect.disabled = customers.length === 0;
+      scheduleNurseSelect.disabled = nurses.length === 0;
+
+      assignPackageCustomer.innerHTML = customers.length
+        ? customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} | ${escapeHtml(customer.contractCode || "-")}</option>`).join("")
+        : `<option value="">Chưa có khách hàng</option>`;
+
+      conversionCustomerSelect.innerHTML = customers.length
+        ? customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} | ${escapeHtml(customer.contractCode || "-")}</option>`).join("")
+        : `<option value="">Chưa có khách hàng</option>`;
+
+      conversionTargetPackage.innerHTML = packages.length
+        ? packages.map((pkg) => `<option value="${pkg.id}">${escapeHtml(pkg.name)} | ${pkg.totalSessions} buổi</option>`).join("")
+        : `<option value="">Chưa có gói</option>`;
+
+      const requestOptions = requests.length
+        ? requests.map((request) => `<option value="${request.id}">${escapeHtml(request.customerName)} | ${formatDateTime(request.requestTime)}</option>`).join("")
+        : "";
+
+      scheduleRequestSelect.innerHTML = `<option value="">Không liên kết yêu cầu</option>${requestOptions}`;
+      populateSchedulePackageAssignmentOptions();
+      populateConversionSourceAssignments();
+    }
+
+    function populateSchedulePackageAssignmentOptions() {
+      const customerId = scheduleCustomerSelect.value;
+      const list = customerPackages.filter((item) => item.customerId === customerId);
+      schedulePackageAssignmentSelect.innerHTML = list.length
+        ? `<option value="">Không gắn gói</option>${list.map((item) => `<option value="${item.id}">${escapeHtml(item.packageName)} | Tổng ${item.totalSessions} buổi</option>`).join("")}`
+        : `<option value="">Không gắn gói</option>`;
+    }
+
+    function populateConversionSourceAssignments() {
+      const customerId = conversionCustomerSelect.value;
+      const list = customerPackages.filter((item) => item.customerId === customerId && getRemainingSessions(item.id) > 0);
+      conversionSourceAssignment.innerHTML = list.length
+        ? list.map((item) => `<option value="${item.id}">${escapeHtml(item.packageName)} | Còn ${getRemainingSessions(item.id)} buổi</option>`).join("")
+        : `<option value="">Không có gói khả dụng</option>`;
+    }
+
+    function normalizeText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function renderScheduleBoard() {
+      const targetDate = scheduleDateFilter.value || new Date().toISOString().slice(0, 10);
+      const daily = schedules
+        .filter((item) => item.date === targetDate)
+        .sort((a, b) => (`${a.startTime}` > `${b.startTime}` ? 1 : -1));
+
+      if (daily.length === 0) {
+        scheduleTableBody.innerHTML = `<tr><td colspan="6" class="empty">Chưa có lịch ca trong ngày đã chọn.</td></tr>`;
+        return;
+      }
+
+      scheduleTableBody.innerHTML = daily
+        .map((item) => {
+          const linkedRequest = item.requestId ? requests.find((r) => r.id === item.requestId) : null;
+          return `
+            <tr>
+              <td>${escapeHtml(item.startTime)} - ${escapeHtml(item.endTime)}</td>
+              <td>${escapeHtml(item.customerName)}</td>
+              <td>${escapeHtml(item.nurseName)}</td>
+              <td>${linkedRequest ? escapeHtml(linkedRequest.customerName) : "-"}</td>
+              <td>${item.serviceStatus === "DONE" ? "Đã làm" : "Chưa làm"}</td>
+              <td>${escapeHtml(item.note || "-")}</td>
+            </tr>
+          `;
+        })
+        .join("");
+    }
+
+    function renderWarnings() {
+      const targetDate = scheduleDateFilter.value || new Date().toISOString().slice(0, 10);
+      const warnings = buildWarnings(targetDate);
+
+      if (warnings.length === 0) {
+        warningList.innerHTML = `<div class="warning-item low">Không phát hiện lỗi phân ca trong ngày ${formatDateOnly(targetDate)}.</div>`;
+        return;
+      }
+
+      warningList.innerHTML = warnings
+        .map((warning) => `<div class="warning-item ${warning.level}">${escapeHtml(warning.message)}</div>`)
+        .join("");
+    }
+
+    function renderNurseShiftReport() {
+      const today = new Date().toISOString().slice(0, 10);
+      const targetDate = reportDate.value || scheduleDateFilter.value || today;
+      const targetMonth = reportMonth.value || targetDate.slice(0, 7);
+
+      const rows = nurses
+        .map((nurse) => {
+          const dailyMinutes = schedules
+            .filter((item) => item.nurseId === nurse.id && item.date === targetDate)
+            .reduce((sum, item) => sum + getScheduleMinutes(item), 0);
+
+          const monthlyMinutes = schedules
+            .filter((item) => item.nurseId === nurse.id && String(item.date || "").startsWith(`${targetMonth}-`))
+            .reduce((sum, item) => sum + getScheduleMinutes(item), 0);
+
+          return {
+            nurseName: nurse.name,
+            dailyShifts: dailyMinutes / 90,
+            monthlyShifts: monthlyMinutes / 90
+          };
+        })
+        .sort((a, b) => b.monthlyShifts - a.monthlyShifts);
+
+      if (rows.length === 0) {
+        reportTableBody.innerHTML = `<tr><td colspan="3" class="empty">Chưa có điều dưỡng để lập báo cáo.</td></tr>`;
+        reportMonthTotal.textContent = `Tổng số ca trong tháng ${targetMonth}: 0`;
+        return;
+      }
+
+      const totalMonthShifts = rows.reduce((sum, row) => sum + row.monthlyShifts, 0);
+      reportMonthTotal.textContent = `Tổng số ca trong tháng ${targetMonth}: ${formatShiftCount(totalMonthShifts)} ca`;
+
+      reportTableBody.innerHTML = rows
+        .map((row) => `
+          <tr>
+            <td>${escapeHtml(row.nurseName)}</td>
+            <td>${formatShiftCount(row.dailyShifts)} ca</td>
+            <td>${formatShiftCount(row.monthlyShifts)} ca</td>
+          </tr>
+        `)
+        .join("");
+    }
+
+    function buildWarnings(targetDate) {
+      const dailySchedules = schedules.filter((item) => item.date === targetDate);
+      const result = [];
+
+      // 1) Cảnh báo sót: yêu cầu trong ngày chưa có lịch liên kết.
+      const requestIdsInDay = requests
+        .filter((request) => (request.requestTime || "").slice(0, 10) === targetDate)
+        .map((request) => request.id);
+
+      requestIdsInDay.forEach((requestId) => {
+        const linked = dailySchedules.some((item) => item.requestId === requestId);
+        if (!linked) {
+          const req = requests.find((r) => r.id === requestId);
+          result.push({
+            level: "high",
+            message: `Sót lịch: Yêu cầu của khách ${req ? req.customerName : requestId} chưa được gắn lịch ca.`
+          });
+        }
+      });
+
+      // 2) Cảnh báo thiếu/sai giờ ca.
+      dailySchedules.forEach((item) => {
+        if (!item.startTime || !item.endTime || item.startTime >= item.endTime) {
+          result.push({
+            level: "high",
+            message: `Sai giờ ca: ${item.customerName} - ${item.nurseName} có khung giờ không hợp lệ (${item.startTime} - ${item.endTime}).`
+          });
+        }
+      });
+
+      // 3) Cảnh báo trùng giờ điều dưỡng.
+      for (let i = 0; i < dailySchedules.length; i += 1) {
+        for (let j = i + 1; j < dailySchedules.length; j += 1) {
+          const a = dailySchedules[i];
+          const b = dailySchedules[j];
+          if (a.nurseId !== b.nurseId) {
+            continue;
+          }
+          if (isOverlap(a.startTime, a.endTime, b.startTime, b.endTime)) {
+            result.push({
+              level: "high",
+              message: `Trùng ca: Điều dưỡng ${a.nurseName} bị xếp chồng lịch (${a.startTime}-${a.endTime}) và (${b.startTime}-${b.endTime}).`
+            });
+          }
+        }
+      }
+
+      // 4) Cảnh báo phân ca sai trạng thái điều dưỡng.
+      dailySchedules.forEach((item) => {
+        const nurse = nurses.find((n) => n.id === item.nurseId);
+        if (!nurse) {
+          result.push({
+            level: "high",
+            message: `Sai dữ liệu: Lịch của khách ${item.customerName} đang trỏ tới điều dưỡng không tồn tại.`
+          });
+          return;
+        }
+        if (nurse.status === "NGHI_PHEP") {
+          result.push({
+            level: "medium",
+            message: `Sai phân ca: Điều dưỡng ${nurse.name} đang nghỉ phép nhưng có lịch ngày ${formatDateOnly(targetDate)}.`
+          });
+        }
+      });
+
+      // 5) Cảnh báo gói đã hết buổi nhưng vẫn lên ca.
+      dailySchedules.forEach((item) => {
+        if (!item.packageAssignmentId) {
+          return;
+        }
+        const assignment = customerPackages.find((pkg) => pkg.id === item.packageAssignmentId);
+        if (!assignment) {
+          return;
+        }
+        const remaining = getRemainingSessions(assignment.id);
+        if (remaining <= 0 && item.serviceStatus !== "DONE") {
+          result.push({
+            level: "high",
+            message: `Hết buổi: Khách ${item.customerName} - gói ${assignment.packageName} đã hết nhưng vẫn lên ca ${item.startTime}-${item.endTime}.`
+          });
+        }
+      });
+
+      if (dailySchedules.length === 0) {
+        result.push({
+          level: "medium",
+          message: `Thiếu lịch: Chưa có lịch ca nào trong ngày ${formatDateOnly(targetDate)}.`
+        });
+      }
+
+      return result;
+    }
+
+    function upsertCustomerFromRequest(customerName, city, district, address) {
+      const existed = customers.find((c) => c.name.toLowerCase() === customerName.toLowerCase());
+      if (existed) {
+        return;
+      }
+      customers.unshift({
+        id: crypto.randomUUID(),
+        name: customerName,
+        phone: "Chưa cập nhật",
+        contractCode: `HD-${new Date().getFullYear()}-${String(customers.length + 1).padStart(3, "0")}`,
+        city,
+        district,
+        address,
+        specialNote: "",
+        treatmentPlan: "Chưa cập nhật liệu trình",
+        medicalNote: "",
+        createdAt: new Date().toISOString()
+      });
+      saveToStorage(STORAGE_KEYS.customers, customers);
+    }
+
+    function bootstrapCustomersFromRequests() {
+      let changed = false;
+      requests.forEach((request) => {
+        const existed = customers.find((c) => c.name.toLowerCase() === request.customerName.toLowerCase());
+        if (existed) {
+          return;
+        }
+        customers.push({
+          id: crypto.randomUUID(),
+          name: request.customerName,
+          phone: "Chưa cập nhật",
+          contractCode: `HD-${new Date().getFullYear()}-${String(customers.length + 1).padStart(3, "0")}`,
+          city: request.city,
+          district: request.district,
+          address: request.address,
+          specialNote: "",
+          treatmentPlan: "Chưa cập nhật liệu trình",
+          medicalNote: "",
+          createdAt: new Date().toISOString()
+        });
+        changed = true;
+      });
+
+      customers = customers.map((customer) => {
+        const normalized = {
+          ...customer,
+          contractCode: customer.contractCode || `HD-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 999)).padStart(3, "0")}`,
+          specialNote: customer.specialNote || ""
+        };
+        if (!customer.contractCode || customer.specialNote === undefined) {
+          changed = true;
+        }
+        return normalized;
+      });
+
+      if (changed) {
+        saveToStorage(STORAGE_KEYS.customers, customers);
+      }
+    }
+
+    function isOverlap(startA, endA, startB, endB) {
+      return startA < endB && startB < endA;
+    }
+
+    function getScheduleMinutes(schedule) {
+      const startMinute = parseClockToMinutes(schedule.startTime);
+      const endMinute = parseClockToMinutes(schedule.endTime);
+      if (startMinute === null || endMinute === null || endMinute <= startMinute) {
+        return 0;
+      }
+      return endMinute - startMinute;
+    }
+
+    function parseClockToMinutes(clockValue) {
+      if (!clockValue || !String(clockValue).includes(":")) {
+        return null;
+      }
+      const [hourText, minuteText] = String(clockValue).split(":");
+      const hour = Number(hourText);
+      const minute = Number(minuteText);
+      if (!Number.isInteger(hour) || !Number.isInteger(minute) || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        return null;
+      }
+      return hour * 60 + minute;
+    }
+
+    function formatShiftCount(shiftValue) {
+      const rounded = Math.round(Number(shiftValue || 0) * 100) / 100;
+      return rounded.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
+    }
+
+    function renderNurseTable() {
+      if (nurses.length === 0) {
+        nurseTableBody.innerHTML = `<tr><td colspan="6" class="empty">Chưa có điều dưỡng nào.</td></tr>`;
+        return;
+      }
+
+      const targetDate = scheduleDateFilter.value || new Date().toISOString().slice(0, 10);
+
+      nurseTableBody.innerHTML = nurses
+        .map((nurse) => {
+          const meta = STATUS_META[nurse.status];
+          const cityText = nurse.city === "HN" ? "Hà Nội" : "TP.HCM";
+          const shiftText = getNurseShiftSummary(nurse.id, targetDate);
+          return `
+            <tr>
+              <td>${escapeHtml(nurse.name)}</td>
+              <td><span class="status-chip ${meta.cls}">${meta.label}</span></td>
+              <td><p class="nurse-time">${escapeHtml(shiftText)}</p></td>
+              <td>${cityText} - ${escapeHtml(nurse.district)}</td>
+              <td>
+                ${nurse.telegramChatId ? `<span class="status-text">${escapeHtml(nurse.telegramChatId)}</span>` : `<span class="status-text">Chưa cấu hình</span>`}
+              </td>
+              <td>
+                <select data-update-status="${nurse.id}">
+                  <option value="RANH" ${nurse.status === "RANH" ? "selected" : ""}>Đang rảnh</option>
+                  <option value="CO_CA" ${nurse.status === "CO_CA" ? "selected" : ""}>Đang có ca</option>
+                  <option value="NGHI_PHEP" ${nurse.status === "NGHI_PHEP" ? "selected" : ""}>Đang nghỉ phép</option>
+                  <option value="CHO_XN" ${nurse.status === "CHO_XN" ? "selected" : ""}>Chờ xác nhận Telegram</option>
+                </select>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      document.querySelectorAll("[data-update-status]").forEach((selectElement) => {
+        selectElement.addEventListener("change", (event) => {
+          const id = event.target.getAttribute("data-update-status");
+          const nextStatus = event.target.value;
+          nurses = nurses.map((n) => (n.id === id ? { ...n, status: nextStatus } : n));
+          saveToStorage(STORAGE_KEYS.nurses, nurses);
+          renderAll();
+        });
+      });
+    }
+
+    function renderRequests() {
+      if (requests.length === 0) {
+        requestList.innerHTML = `<p class="empty">Chưa có yêu cầu khách hàng.</p>`;
+        return;
+      }
+
+      requestList.innerHTML = requests
+        .map((request) => {
+          const cityText = request.city === "HN" ? "Hà Nội" : "TP.HCM";
+          return `
+            <article class="request-item">
+              <h3>${escapeHtml(request.customerName)} - ${escapeHtml(request.servicePackage)}</h3>
+              <p>${escapeHtml(request.address)}</p>
+              <div class="meta">
+                <span>${cityText} - ${escapeHtml(request.district)}</span>
+                <span>${formatDateTime(request.requestTime)}</span>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    function renderRequestSelect() {
+      if (requests.length === 0) {
+        requestSelect.innerHTML = `<option value="">Chưa có yêu cầu</option>`;
+        return;
+      }
+
+      requestSelect.innerHTML = requests
+        .map((request) => {
+          const cityText = request.city === "HN" ? "Hà Nội" : "TP.HCM";
+          return `<option value="${request.id}">${escapeHtml(request.customerName)} | ${cityText} - ${escapeHtml(request.district)} | ${formatDateTime(request.requestTime)}</option>`;
+        })
+        .join("");
+    }
+
+    function renderSuggestions(candidates, request) {
+      if (candidates.length === 0) {
+        suggestionList.innerHTML = `<p class="empty">Không có điều dưỡng đang rảnh phù hợp cho yêu cầu này.</p>`;
+        return;
+      }
+
+      suggestionList.innerHTML = candidates
+        .map((candidate) => {
+          const cityText = candidate.city === "HN" ? "Hà Nội" : "TP.HCM";
+          return `
+            <article class="suggestion-item">
+              <div class="suggestion-top">
+                <h3>${escapeHtml(candidate.name)}</h3>
+                <span class="score">Khoảng cách ước tính: ${candidate.distanceKm.toFixed(2)} km</span>
+              </div>
+              <p>Khu vực: ${cityText} - ${escapeHtml(candidate.district)}</p>
+              <p class="small-note">${candidate.telegramChatId ? `Telegram Chat ID: ${escapeHtml(candidate.telegramChatId)}` : "Chưa có Telegram Chat ID"}</p>
+              <div class="meta">
+                <span>${candidate.city === request.city ? "Cùng thành phố" : "Khác thành phố"}</span>
+              </div>
+              <button class="btn-primary" type="button" data-dispatch="${candidate.id}" data-request="${request.id}">Giao ca</button>
+            </article>
+          `;
+        })
+        .join("");
+
+      document.querySelectorAll("[data-dispatch]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const nurseId = event.target.getAttribute("data-dispatch");
+          const requestId = event.target.getAttribute("data-request");
+          dispatchAssignment(nurseId, requestId);
+        });
+      });
+    }
+
+    async function dispatchAssignment(nurseId, requestId) {
+      const nurse = nurses.find((n) => n.id === nurseId);
+      const request = requests.find((r) => r.id === requestId);
+
+      if (!nurse || !request || nurse.status !== "RANH") {
+        return;
+      }
+
+      if (!nurse.telegramChatId) {
+        suggestionList.innerHTML = `
+          <article class="suggestion-item">
+            <h3>Thiếu Telegram Chat ID</h3>
+            <p>Điều dưỡng <strong>${escapeHtml(nurse.name)}</strong> chưa có Telegram Chat ID, chưa thể giao ca tự động.</p>
+          </article>
+        `;
+        return;
+      }
+
+      const assignmentId = crypto.randomUUID();
+
+      assignments.unshift({
+        id: assignmentId,
+        nurseId,
+        requestId,
+        nurseName: nurse.name,
+        customerName: request.customerName,
+        status: "QUEUED",
+        requestedAt: new Date().toISOString(),
+        telegramChatId: nurse.telegramChatId
+      });
+
+      nurses = nurses.map((n) => (n.id === nurseId ? { ...n, status: "CHO_XN" } : n));
+
+      saveToStorage(STORAGE_KEYS.assignments, assignments);
+      saveToStorage(STORAGE_KEYS.nurses, nurses);
+      renderNurseTable();
+      renderAssignments();
+
+      try {
+        const sendResult = await sendTelegramAssignment(assignmentId, nurse, request);
+
+        assignments = assignments.map((item) => {
+          if (item.id !== assignmentId) {
+            return item;
+          }
+          return {
+            ...item,
+            status: "WAIT_CONFIRM",
+            sentAt: new Date().toISOString(),
+            telegramMessageId: sendResult.messageId ? String(sendResult.messageId) : ""
+          };
+        });
+
+        saveToStorage(STORAGE_KEYS.assignments, assignments);
+        renderAssignments();
+        setTelegramBanner("Đã gửi Telegram thành công, đang chờ điều dưỡng xác nhận.", false);
+
+        suggestionList.innerHTML = `
+          <article class="suggestion-item">
+            <h3>Đã giao ca qua Telegram</h3>
+            <p>Đã gửi thông báo cho <strong>${escapeHtml(nurse.name)}</strong>. Chờ điều dưỡng bấm xác nhận trên Telegram.</p>
+            <div class="meta">
+              <span>Mã giao ca: ${escapeHtml(assignmentId)}</span>
+            </div>
+          </article>
+        `;
+      } catch (error) {
+        assignments = assignments.map((item) => {
+          if (item.id !== assignmentId) {
+            return item;
+          }
+          return {
+            ...item,
+            status: "SEND_FAILED",
+            error: String(error.message || error)
+          };
+        });
+
+        nurses = nurses.map((n) => (n.id === nurseId ? { ...n, status: "RANH" } : n));
+        saveToStorage(STORAGE_KEYS.assignments, assignments);
+        saveToStorage(STORAGE_KEYS.nurses, nurses);
+
+        renderNurseTable();
+        renderAssignments();
+        setTelegramBanner(`Gửi Telegram lỗi: ${String(error.message || error)}`, true);
+      }
+    }
+
+    function renderTelegramConfig() {
+      document.getElementById("telegramMode").value = telegramConfig.mode || "gateway";
+      document.getElementById("telegramBotToken").value = telegramConfig.botToken || "";
+      document.getElementById("telegramDispatchUrl").value = telegramConfig.dispatchUrl || "";
+      document.getElementById("telegramSyncUrl").value = telegramConfig.syncUrl || "";
+      document.getElementById("telegramPollSeconds").value = String(telegramConfig.pollSeconds || 15);
+    }
+
+    function renderAssignments() {
+      if (assignments.length === 0) {
+        assignmentList.innerHTML = `<p class="empty">Chưa có lịch sử giao ca qua Telegram.</p>`;
+        return;
+      }
+
+      assignmentList.innerHTML = assignments
+        .slice(0, 12)
+        .map((item) => {
+          const statusText = ASSIGNMENT_STATUS_META[item.status] || item.status;
+          const confirmText = item.confirmedAt ? formatDateTime(item.confirmedAt) : "-";
+          return `
+            <article class="assignment-item">
+              <h3>${escapeHtml(item.nurseName)} -> ${escapeHtml(item.customerName)}</h3>
+              <p class="status-text">Trạng thái: ${escapeHtml(statusText)}</p>
+              <div class="meta">
+                <span>Yêu cầu lúc: ${formatDateTime(item.requestedAt)}</span>
+                <span>Xác nhận lúc: ${confirmText}</span>
+                <span>Mã giao ca: ${escapeHtml(item.id)}</span>
+              </div>
+              ${item.error ? `<p class="small-note">Lỗi: ${escapeHtml(item.error)}</p>` : ""}
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    function startPolling() {
+      if (telegramPollTimer) {
+        clearInterval(telegramPollTimer);
+        telegramPollTimer = null;
+      }
+
+      const seconds = Math.max(5, Number(telegramConfig.pollSeconds) || 15);
+      telegramPollTimer = setInterval(() => {
+        syncTelegramConfirmations(false);
+      }, seconds * 1000);
+    }
+
+    async function syncTelegramConfirmations(isManual) {
+      try {
+        const confirmations = telegramConfig.mode === "direct"
+          ? await syncFromTelegramDirect()
+          : await syncFromGateway();
+
+        if (confirmations.length > 0) {
+          applyConfirmations(confirmations);
+          setTelegramBanner(`Đồng bộ thành công ${confirmations.length} xác nhận từ Telegram.`, false);
+        } else if (isManual) {
+          setTelegramBanner("Chưa có xác nhận mới từ Telegram.", false);
+        }
+      } catch (error) {
+        setTelegramBanner(`Đồng bộ Telegram lỗi: ${String(error.message || error)}`, true);
+      }
+    }
+
+    async function sendTelegramAssignment(assignmentId, nurse, request) {
+      const message = [
+        `Ban co ca moi: ${request.customerName}`,
+        `Goi dich vu: ${request.servicePackage}`,
+        `Dia chi: ${request.address}, ${request.district}`,
+        `Gio bat dau: ${formatDateTime(request.requestTime)}`,
+        "Vui long xac nhan!"
+      ].join("\n");
+
+      if (telegramConfig.mode === "direct") {
+        if (!telegramConfig.botToken) {
+          throw new Error("Thiếu Bot Token cho chế độ Direct.");
+        }
+
+        const response = await fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: nurse.telegramChatId,
+            text: message,
+            reply_markup: {
+              inline_keyboard: [[{ text: "Xac nhan", callback_data: `CONFIRM_ASSIGN:${assignmentId}` }]]
+            }
+          })
+        });
+
+        const data = await response.json();
+        if (!data.ok) {
+          throw new Error(data.description || "Telegram sendMessage failed");
+        }
+
+        return { messageId: data.result && data.result.message_id ? data.result.message_id : "" };
+      }
+
+      if (!telegramConfig.dispatchUrl) {
+        throw new Error("Thiếu Dispatch URL cho chế độ Gateway.");
+      }
+
+      const response = await fetch(telegramConfig.dispatchUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          assignmentId,
+          nurse,
+          request,
+          message,
+          callbackData: `CONFIRM_ASSIGN:${assignmentId}`
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.ok === false) {
+        throw new Error(data.message || "Gateway dispatch failed");
+      }
+
+      return { messageId: data.messageId || "" };
+    }
+
+    async function syncFromTelegramDirect() {
+      if (!telegramConfig.botToken) {
+        throw new Error("Thiếu Bot Token để đồng bộ trực tiếp.");
+      }
+
+      const url = `https://api.telegram.org/bot${telegramConfig.botToken}/getUpdates?offset=${telegramOffset}&timeout=0`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.description || "getUpdates failed");
+      }
+
+      const updates = Array.isArray(data.result) ? data.result : [];
+      if (updates.length > 0) {
+        telegramOffset = Math.max(...updates.map((u) => u.update_id)) + 1;
+        saveToStorage(STORAGE_KEYS.telegramOffset, telegramOffset);
+      }
+
+      return updates
+        .map((update) => {
+          const cb = update.callback_query;
+          if (!cb || !cb.data || !cb.data.startsWith("CONFIRM_ASSIGN:")) {
+            return null;
+          }
+          return {
+            assignmentId: cb.data.split(":")[1],
+            from: cb.from && cb.from.username ? cb.from.username : "telegram_user",
+            confirmedAt: new Date().toISOString()
+          };
+        })
+        .filter(Boolean);
+    }
+
+    async function syncFromGateway() {
+      if (!telegramConfig.syncUrl) {
+        throw new Error("Thiếu Sync URL cho chế độ Gateway.");
+      }
+
+      const response = await fetch(telegramConfig.syncUrl, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.ok === false) {
+        throw new Error(data.message || "Gateway sync failed");
+      }
+
+      if (!Array.isArray(data.confirmations)) {
+        return [];
+      }
+
+      return data.confirmations.map((item) => ({
+        assignmentId: item.assignmentId,
+        from: item.from || "gateway",
+        confirmedAt: item.confirmedAt || new Date().toISOString()
+      }));
+    }
+
+    function applyConfirmations(confirmations) {
+      const confirmedIds = new Set();
+
+      assignments = assignments.map((item) => {
+        const found = confirmations.find((x) => x.assignmentId === item.id);
+        if (!found || item.status === "CONFIRMED") {
+          return item;
+        }
+        confirmedIds.add(item.id);
+        return {
+          ...item,
+          status: "CONFIRMED",
+          confirmedBy: found.from,
+          confirmedAt: found.confirmedAt
+        };
+      });
+
+      if (confirmedIds.size === 0) {
+        return;
+      }
+
+      nurses = nurses.map((nurse) => {
+        const hasConfirmedAssignment = assignments.some((a) => a.nurseId === nurse.id && confirmedIds.has(a.id));
+        if (!hasConfirmedAssignment) {
+          return nurse;
+        }
+        return { ...nurse, status: "CO_CA" };
+      });
+
+      saveToStorage(STORAGE_KEYS.assignments, assignments);
+      saveToStorage(STORAGE_KEYS.nurses, nurses);
+      renderNurseTable();
+      renderAssignments();
+    }
+
+    function setTelegramBanner(message, isWarn) {
+      telegramStatusBanner.textContent = message;
+      telegramStatusBanner.className = isWarn ? "banner warn" : "banner";
+    }
+
+    function calculateDistanceKm(fromCoord, toCoord) {
+      if (!fromCoord || !toCoord) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      const R = 6371;
+      const dLat = toRadians(toCoord.lat - fromCoord.lat);
+      const dLng = toRadians(toCoord.lng - fromCoord.lng);
+      const lat1 = toRadians(fromCoord.lat);
+      const lat2 = toRadians(toCoord.lat);
+
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      return R * c;
+    }
+
+    function toRadians(deg) {
+      return (deg * Math.PI) / 180;
+    }
+
+    function formatDateTime(isoValue) {
+      const date = new Date(isoValue);
+      if (Number.isNaN(date.getTime())) {
+        return "-";
+      }
+      return new Intl.DateTimeFormat("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function formatDateOnly(dateValue) {
+      const date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) {
+        return "-";
+      }
+      return new Intl.DateTimeFormat("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      }).format(date);
+    }
+
+    function saveToStorage(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    function loadFromStorage(key, fallback) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "null");
+        return Array.isArray(parsed) ? parsed : fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function loadObjectFromStorage(key, fallback) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "null");
+        return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function loadPrimitiveFromStorage(key, fallback) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "null");
+        return typeof parsed === "number" ? parsed : fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function escapeHtml(value) {
+      const text = String(value ?? "");
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+  </script>
+</body>
+</html>
